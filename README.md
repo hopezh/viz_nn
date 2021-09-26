@@ -20,7 +20,7 @@ Visualize Neural Networks.
 
     [-] data structure of tensor
 
-    [-] display modes of a layer
+    [-] **display modes** of a layer
 
         [.] node
 
@@ -28,6 +28,8 @@ Visualize Neural Networks.
 
         [.] flattened vector
 
-    [-] key attributes
+    [-] key **attributes**
 
        [.] size of tensor : B x T x C x H x W
+
+[+] check **[guify](https://github.com/colejd/guify)** for GUI

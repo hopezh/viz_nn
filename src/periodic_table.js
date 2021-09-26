@@ -9,7 +9,7 @@ import {
     CSS3DObject,
 } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 
-// TODO table : contents of each elment
+// [+] table : contents of each elment
 // prettier-ignore
 const table = [
     // "symbol", "full name", "atomic weight", column in the table, row in the table
@@ -161,9 +161,9 @@ function init() {
         0.1,
         100000
     );
-    // camera.position.x = 500;
-    camera.position.y = 1000;
-    camera.position.z = 2000;
+    camera.position.x = 1000;
+    camera.position.y = 2000;
+    camera.position.z = 3000;
 
     scene = new THREE.Scene();
 
