@@ -1,5 +1,5 @@
-import { defineConfig  } from "vite";
+import { defineConfig } from "vite";
 
-export defineConfig({
-    base:"/viz_nn/", 
+export default defineConfig({
+    base: "/viz_nn/",
 });
