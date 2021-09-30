@@ -11,7 +11,7 @@ import {
 
 import Card from "./Card.js";
 
-// [+] table : contents of each elment
+// [+] get attributes of each elment
 // prettier-ignore
 const table = [
     // "symbol", "full name", "atomic weight", column in the table, row in the table
@@ -163,9 +163,9 @@ function init() {
         0.1,
         100000
     );
-    camera.position.x = 1000;
-    camera.position.y = 2000;
-    camera.position.z = 3000;
+    // camera.position.x = 1000;
+    // camera.position.y = 2000;
+    camera.position.z = 5000;
 
     scene = new THREE.Scene();
 
@@ -177,17 +177,26 @@ function init() {
     gridHelper.position.x = 0;
     scene.add(gridHelper);
 
-    // 
-    const card = new Card(200, 300, 0, 0, 0, 10);
-    card.createBase(); 
-    card.createNumber(); 
-    const cardCSS = new CSS3DObject(card.base);
-    cardCSS.position.x = Math.random() * 4000 - 2000;
-    cardCSS.position.y = Math.random() * 4000 - 2000;
-    cardCSS.position.z = Math.random() * 4000 - 2000;
-    scene.add(cardCSS); 
+    // TEST create card object from class
+    for (let i = 0; i < 20; i += 1) {
+        const card = new Card("card " + String(i), '100px', '100px');
+        card.value = Math.round(Math.random() * 1000) / 100; 
+        
+        card.createBase();
+        card.base.style.width = card.width; 
+        card.base.style.height = card.height; 
+        console.log(card);
 
-    // init elements
+        card.createNumber();
+        const cardCSS = new CSS3DObject(card.base);
+        cardCSS.position.x = Math.random() * 4000 - 2000;
+        cardCSS.position.y = Math.random() * 4000 - 2000;
+        cardCSS.position.z = Math.random() * 4000 - 2000;
+        scene.add(cardCSS);
+        
+    }
+
+    // [+] init elements
     for (let i = 0; i < table.length; i += 5) {
         var element = document.createElement("div");
         element.className = "element";

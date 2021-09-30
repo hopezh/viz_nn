@@ -6,7 +6,9 @@ import {
 
 export default class Card {
     // [+] constructor
-    constructor(width, height, posx, posy, posz, value) {
+    constructor(name, width, height, posx, posy, posz, value) {
+        this.name = name;
+
         this.width = width;
         this.height = height;
 
@@ -20,7 +22,7 @@ export default class Card {
     // [+] create a base div
     createBase() {
         this.base = document.createElement("div");
-        this.base.className = "card";
+        this.base.className = "cardBase";
         this.base.style.backgroundColor =
             "rgba(0,127,127," + (Math.random() * 0.5 + 0.25) + ")";
     }
@@ -28,7 +30,7 @@ export default class Card {
     // [+] create a child div for number
     createNumber() {
         this.number = document.createElement("div");
-        this.number.className = "number";
+        this.number.className = "cardNumber";
         this.number.textContent = this.value;
         this.base.appendChild(this.number);
     }
