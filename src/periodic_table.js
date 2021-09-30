@@ -9,6 +9,8 @@ import {
     CSS3DObject,
 } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 
+import Card from "./Card.js";
+
 // [+] table : contents of each elment
 // prettier-ignore
 const table = [
@@ -174,6 +176,16 @@ function init() {
     gridHelper.position.y = 0;
     gridHelper.position.x = 0;
     scene.add(gridHelper);
+
+    // 
+    const card = new Card(200, 300, 0, 0, 0, 10);
+    card.createBase(); 
+    card.createNumber(); 
+    const cardCSS = new CSS3DObject(card.base);
+    cardCSS.position.x = Math.random() * 4000 - 2000;
+    cardCSS.position.y = Math.random() * 4000 - 2000;
+    cardCSS.position.z = Math.random() * 4000 - 2000;
+    scene.add(cardCSS); 
 
     // init elements
     for (let i = 0; i < table.length; i += 5) {
