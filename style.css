@@ -59,7 +59,7 @@ a:hover {
     /* background-color: rgb(0, 0, 0);  */
 }
 
-.cardBase .cardNumber {
+.cardBase .cardNum {
     position: absolute;
     top: 40px;
     left: 0px;

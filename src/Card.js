@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Vector3 } from "three";
 import {
     CSS3DRenderer,
     CSS3DObject,
@@ -20,26 +21,23 @@ export default class Card {
     }
 
     // [+] create a base div
-    createBase() {
-        this.base = document.createElement("div");
-        this.base.className = "cardBase";
-        this.base.style.backgroundColor = "rgba(0, 127, 127, O.5)";
+    createBaseDiv() {
+        this.baseDiv = document.createElement("div");
+        this.baseDiv.className = "cardBase";
+        this.baseDiv.style.backgroundColor = "rgba(0, 127, 127, O.5)";
     }
 
     // [+] create a child div for number
-    createNumber() {
-        this.number = document.createElement("div");
-        this.number.className = "cardNumber";
-        this.number.textContent = this.value;
-        this.base.appendChild(this.number);
+    createNumDiv() {
+        this.numDiv = document.createElement("div");
+        this.numDiv.className = "cardNum";
+        this.numDiv.textContent = this.value;
+        this.baseDiv.appendChild(this.numDiv);
     }
 
     // [+] create CSS3DObject
     createCSS3DObj() {
-        this.css3DObj = new CSS3DObject(this.base);
-        this.css3DObj.position.x = 0;
-        this.css3DObj.position.y = 0;
-        this.css3DObj.position.z = 0;
+        this.css3DObj = new CSS3DObject(this.baseDiv);
     }
 
     // [+] add card css3dobj to scene
