@@ -191,12 +191,14 @@ function init() {
         card.baseDiv.style.height = card.height;
         card.baseDiv.style.backgroundColor =
             "rgba(" +
-            Math.random() * 255 +"," +
-            Math.random() * 255 +"," + 
-            Math.random() * 255 +"," + 
+            Math.random() * 255 +
+            "," +
+            Math.random() * 255 +
+            "," +
+            Math.random() * 255 +
+            "," +
             (Math.random() * 0.5 + 0.5) +
-            ")"; 
-        console.log(typeof(card));
+            ")";
 
         card.createNumDiv();
 
