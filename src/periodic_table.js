@@ -163,8 +163,8 @@ function init() {
         0.1,
         100000
     );
-    // camera.position.x = 1000;
-    // camera.position.y = 2000;
+    camera.position.x = 1000;
+    camera.position.y = 2000;
     camera.position.z = 5000;
 
     scene = new THREE.Scene();
@@ -177,23 +177,28 @@ function init() {
     gridHelper.position.x = 0;
     scene.add(gridHelper);
 
-    // TEST create card object from class
+    //////////////////////////////////////////////
+    // TEST create card objects from Card class
+    //
+    //////////////////////////////////////////////
+
     for (let i = 0; i < 20; i += 1) {
-        const card = new Card("card " + String(i), '100px', '100px');
+        const card = new Card("card " + String(i), '100px', '100px'); // note that W&H values are strings
         card.value = Math.round(Math.random() * 1000) / 100; 
         
         card.createBase();
         card.base.style.width = card.width; 
         card.base.style.height = card.height; 
-        console.log(card);
+        // console.log(card);
 
         card.createNumber();
-        const cardCSS = new CSS3DObject(card.base);
-        cardCSS.position.x = Math.random() * 4000 - 2000;
-        cardCSS.position.y = Math.random() * 4000 - 2000;
-        cardCSS.position.z = Math.random() * 4000 - 2000;
-        scene.add(cardCSS);
-        
+
+        card.createCSS3DObj(); 
+        card.css3DObj.position.x = Math.random() * 4000 - 2000;
+        card.css3DObj.position.y = Math.random() * 4000 - 2000;
+        card.css3DObj.position.z = Math.random() * 4000 - 2000;
+
+        card.addToScene(scene); 
     }
 
     // [+] init elements

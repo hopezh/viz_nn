@@ -35,6 +35,19 @@ export default class Card {
         this.base.appendChild(this.number);
     }
 
+    // [+] create CSS3DObject
+    createCSS3DObj() {
+        this.css3DObj            = new CSS3DObject(this.base);
+        this.css3DObj.position.x = 0;
+        this.css3DObj.position.y = 0;
+        this.css3DObj.position.z = 0;
+    }
+
+    // [+] add card css3dobj to scene
+    addToScene(scene) {
+        scene.add(this.css3DObj);
+    }
+
     // createAndAddCSS3DObj(){
     //     this.cssObj = new CSS3DObject( this.card );
     //     this.cssObj.position.x = Math.random() * 4000 - 2000;
