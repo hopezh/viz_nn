@@ -6,25 +6,24 @@ import {
 
 export default class Card {
     // [+] constructor
-    constructor(name, width, height, posx, posy, posz, value) {
-        this.name = name;
+    constructor(_name, _width, _height, _posx, _posy, _posz, _value) {
+        this.name = _name;
 
-        this.width = width;
-        this.height = height;
+        this.width = _width;
+        this.height = _height;
 
-        this.posx = posx;
-        this.posy = posy;
-        this.posz = posz;
+        this.posx = _posx;
+        this.posy = _posy;
+        this.posz = _posz;
 
-        this.value = value;
+        this.value = _value;
     }
 
     // [+] create a base div
     createBase() {
         this.base = document.createElement("div");
         this.base.className = "cardBase";
-        this.base.style.backgroundColor =
-            "rgba(0,127,127," + (Math.random() * 0.5 + 0.25) + ")";
+        this.base.style.backgroundColor = "rgba(0, 127, 127, O.5)";
     }
 
     // [+] create a child div for number
@@ -37,7 +36,7 @@ export default class Card {
 
     // [+] create CSS3DObject
     createCSS3DObj() {
-        this.css3DObj            = new CSS3DObject(this.base);
+        this.css3DObj = new CSS3DObject(this.base);
         this.css3DObj.position.x = 0;
         this.css3DObj.position.y = 0;
         this.css3DObj.position.z = 0;
@@ -47,13 +46,4 @@ export default class Card {
     addToScene(scene) {
         scene.add(this.css3DObj);
     }
-
-    // createAndAddCSS3DObj(){
-    //     this.cssObj = new CSS3DObject( this.card );
-    //     this.cssObj.position.x = Math.random() * 4000 - 2000;
-    //     this.cssObj.position.y = Math.random() * 4000 - 2000;
-    //     this.cssObj.position.z = Math.random() * 4000 - 2000;
-
-    //     scene.add(this.cssObj);
-    // }
 }

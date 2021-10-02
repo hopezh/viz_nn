@@ -183,22 +183,32 @@ function init() {
     //////////////////////////////////////////////
 
     for (let i = 0; i < 20; i += 1) {
-        const card = new Card("card " + String(i), '100px', '100px'); // note that W&H values are strings
-        card.value = Math.round(Math.random() * 1000) / 100; 
-        
+        const card = new Card("card " + String(i), "100px", "100px"); // note that W&H values are strings
+        card.value = Math.round(Math.random() * 1000) / 100;
+
         card.createBase();
-        card.base.style.width = card.width; 
-        card.base.style.height = card.height; 
+        card.base.style.width = card.width;
+        card.base.style.height = card.height;
+        card.base.style.backgroundColor =
+            "rgba(" +
+            Math.random() * 255 +
+            "," + // r
+            Math.random() * 255 +
+            "," + // g
+            Math.random() * 255 +
+            "," + // b
+            (Math.random() * 0.5 + 0.5) + // alpha
+            ")";
         // console.log(card);
 
         card.createNumber();
 
-        card.createCSS3DObj(); 
+        card.createCSS3DObj();
         card.css3DObj.position.x = Math.random() * 4000 - 2000;
         card.css3DObj.position.y = Math.random() * 4000 - 2000;
         card.css3DObj.position.z = Math.random() * 4000 - 2000;
 
-        card.addToScene(scene); 
+        card.addToScene(scene);
     }
 
     // [+] init elements
