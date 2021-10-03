@@ -43,9 +43,9 @@ a:hover {
 .cardBase {
     width: 120px;
     height: 160px;
-    box-shadow: 0px 0px 12px rgba(0, 255, 255, 0.3);
-    border: 5px solid rgba(105, 250, 250, 0);
-    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 0, 0.);
+    border-radius: 10px;
     font-family: Helvetica, sans-serif;
     text-align: center;
     line-height: normal;
@@ -54,30 +54,31 @@ a:hover {
 }
 
 .cardBase:hover {
-    box-shadow: 0px 0px 12px rgba(0, 255, 255, 1);
-    border: 3px solid rgba(255, 255, 0, 0.7);
+    box-shadow: 0px 0px 10px rgba(0, 255, 255, 1);
+    border: 2px solid rgba(255, 255, 0, 0.5);
     background-color: red;
 }
 
 .cardBase .cardNum {
     position: absolute;
-    text-align: center;
+    text-align: left;
     top: 0px;
     left: 0px;
     right: 0px;
-    font-size: 30px;
-    font-weight: bold;
+    font-family: "Arial Narrow";
+    font-size: 10px;
+    font-weight: normal;
     color: rgba(255, 255, 255, 0);
 }
 
 .cardBase:hover .cardNum {
     position: absolute;
     text-align: center;
-    top: 30px;
+    top: 0px;
     left: 0px;
     right: 0px;
-    font-size: 50px;
-    font-weight: bold;
+    font-size: 80px;
+    font-weight: normal;
     color: rgba(255, 255, 255, 0.7);
 }
 

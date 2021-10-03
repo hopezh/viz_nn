@@ -7,7 +7,8 @@ import {
 
 export default class Card {
     // [+] constructor
-    constructor(_name, _width, _height, _posx, _posy, _posz, _value) {
+    constructor(_idx, _name, _width, _height, _posx, _posy, _posz, _value) {
+        this.idx = _idx; 
         this.name = _name;
 
         this.width = _width;

@@ -157,6 +157,7 @@ init();
 animate();
 
 function init() {
+    // [+] camera
     camera = new THREE.PerspectiveCamera(
         50,
         window.innerWidth / window.innerHeight,
@@ -164,17 +165,17 @@ function init() {
         100000
     );
     camera.position.x = 1000;
-    camera.position.y = 2000;
-    camera.position.z = 5000;
+    camera.position.y = 100;
+    camera.position.z = 2000;
 
+    // [+] scene
     scene = new THREE.Scene();
 
-    // grid helper
+    // [+] grid helper
     const grid_size = 2000;
     const grid_div = 20;
     const gridHelper = new THREE.GridHelper(grid_size, grid_div);
-    gridHelper.position.y = 0;
-    gridHelper.position.x = 0;
+    gridHelper.position.set(0, 0, 0);
     scene.add(gridHelper);
 
     //////////////////////////////////////////////
@@ -183,7 +184,7 @@ function init() {
     //////////////////////////////////////////////
 
     for (let i = 0; i < 20; i += 1) {
-        const card = new Card("card " + String(i), "100px", "100px"); // note that W&H values are strings
+        const card = new Card(i + 1, "card " + String(i), "96px", "96px"); // note that W&H values are strings
         card.value = Math.round(Math.random() * 1000) / 100;
 
         card.createBaseDiv();
@@ -197,17 +198,24 @@ function init() {
             "," +
             Math.random() * 255 +
             "," +
-            (Math.random() * 0.5 + 0.5) +
+            (Math.random() * 0.5 + 0.5) + 
             ")";
 
         card.createNumDiv();
 
         card.createCSS3DObj();
+        // card.css3DObj.position.set(
+        //     // set random position
+        //     Math.random() * 4000 - 2000,
+        //     Math.random() * 4000 - 2000,
+        //     Math.random() * 4000 - 2000
+        // ); // or else, use "card.css3DObj.position.x = Math.random() * 4000 - 2000;"
+
         card.css3DObj.position.set(
             // set random position
-            Math.random() * 4000 - 2000,
-            Math.random() * 4000 - 2000,
-            Math.random() * 4000 - 2000
+            i * 100,
+            0,
+            1000
         ); // or else, use "card.css3DObj.position.x = Math.random() * 4000 - 2000;"
 
         card.addToScene(scene);
@@ -360,7 +368,7 @@ function init() {
     renderer.domElement.style.top = "0px";
     document.getElementById("container").appendChild(renderer.domElement);
 
-    rendererWebGL = new THREE.WebGLRenderer();
+    rendererWebGL = new THREE.WebGLRenderer({ antialias: true });
     rendererWebGL.setPixelRatio(window.devicePixelRatio);
     rendererWebGL.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(rendererWebGL.domElement);
@@ -500,3 +508,36 @@ function render() {
     renderer.render(scene, camera);
     rendererWebGL.render(scene, camera);
 }
+
+// TEST tensorflow.js
+import * as tf from "@tensorflow/tfjs";
+
+// Define a model for linear regression.
+const model = tf.sequential();
+model.add(
+    tf.layers.dense({
+        units: 1,
+        inputShape: [1],
+    })
+);
+
+model.compile({
+    loss: "meanSquaredError",
+    optimizer: "sgd",
+});
+
+// Generate some synthetic data for training.
+const xs = tf.tensor2d([1, 2, 3, 4], [4, 1]);
+const ys = tf.tensor2d([1, 3, 5, 7], [4, 1]);
+
+// Train the model using the data.
+// prettier-ignore
+model.fit(
+    xs, 
+    ys, 
+    { epochs: 10 }
+).then(() => {
+    // Use the model to do inference on a data point the model hasn't seen before:
+    model.predict(tf.tensor2d([5], [1, 1])).print();
+    // Open the browser devtools to see the output
+});
