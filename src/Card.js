@@ -41,6 +41,11 @@ export default class Card {
         this.css3DObj = new CSS3DObject(this.baseDiv);
     }
 
+    // [+] set position of CSS3DObject 
+    setCSSObjPosition (x, y, z) {
+        this.css3DObj.position.set(x, y, z);
+    }
+
     // [+] add card css3dobj to scene
     addToScene(scene) {
         scene.add(this.css3DObj);
