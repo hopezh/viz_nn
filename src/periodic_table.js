@@ -51,7 +51,7 @@ function init() {
 
     // [+] axis helper
     const axesHelper = new THREE.AxesHelper(100);
-    scene.add(axesHelper);
+    scene.add(axesHelper);;
 
     //////////////////////////////////////////////
     // TEST create card objects from Card class
@@ -100,7 +100,6 @@ function init() {
     }
 
     // [+] renderer
-
     rendererCSS = new CSS3DRenderer();
     rendererCSS.setSize(window.innerWidth, window.innerHeight);
     rendererCSS.domElement.style.position = "absolute";
