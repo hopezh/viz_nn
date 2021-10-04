@@ -198,7 +198,7 @@ function init() {
             "," +
             Math.random() * 255 +
             "," +
-            (Math.random() * 0.5 + 0.5) + 
+            (Math.random() * 0.5 + 0.5) +
             ")";
 
         card.createNumDiv();
@@ -541,3 +541,16 @@ model.fit(
     model.predict(tf.tensor2d([5], [1, 1])).print();
     // Open the browser devtools to see the output
 });
+
+// TEST conver TF tensor to JS array
+const tensor_arr = tf
+    .tensor([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], [2, 3, 2])
+    .arraySync();
+// cosnt val = tensor.dataSync();
+// const arr = tensor.arraySync();
+// console.log(val);
+console.log("tensor_array \t\t:", tensor_arr);
+console.log("tensor_array[0] \t:", tensor_arr[0]);
+console.log("tensor_array[1] \t:", tensor_arr[1]);
+console.log("tensor_array[0][2] \t:", tensor_arr[0][2]);
+console.log("tensor_array[0][2][1] \t:", tensor_arr[0][2][1]);
