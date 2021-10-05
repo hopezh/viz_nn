@@ -9,6 +9,8 @@ import {
     CSS3DObject,
 } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 
+import * as tf from "@tensorflow/tfjs";
+
 import Card from "./Card.js";
 
 // init vars for elements in a scene
@@ -23,6 +25,9 @@ init();
 animate();
 
 function init() {
+    // [+] scene
+    scene = new THREE.Scene();
+
     // [+] camera
     camera = new THREE.PerspectiveCamera(
         50,
@@ -30,10 +35,9 @@ function init() {
         0.1,
         100000
     );
-    camera.position.set(500, 500, 1000);
+    camera.position.set(500, 1000, 2500);
 
-    // [+] scene
-    scene = new THREE.Scene();
+    // [+] lights
 
     // [+] grid helper
     const grid_size = 2000;
@@ -54,16 +58,39 @@ function init() {
     scene.add(axesHelper);
 
     //////////////////////////////////////////////
+    // TEST create tensor
+    //////////////////////////////////////////////
+
+    const a = tf.randomNormal([4, 3, 2]);
+    console.log("a:", a);
+    // console.log("type of a :", typeof a);
+    console.log("shape of a :", a.shape);
+    console.log('dim of a:', a.shape.length);
+    console.log("size of a :", a.size);
+    // console.log("dtype of a :", a.dtype);
+    // console.log("values of a :", a.values);
+    a.print();
+
+    // a.array().then((array) => console.log("a.array : ", array));
+    // a.data().then((data) => console.log("a.data : ", data));
+    // console.log(a.dataSync()[0]);
+
+    //////////////////////////////////////////////
     // TEST create card objects from Card class
     //
     //////////////////////////////////////////////
     // prettier-ignore
-    for (let i = 0; i < 20; i += 1) {
+
+    const Cards = Array([4, 3, 2]);
+    console.log(Cards); 
+
+    for (let i = 0; i < a.size; i += 1) {
         // [-] create card object
 
         const card = new Card(i, "card " + String(i), "96px", "96px"); 
         // [-] assign a random value to card
-        card.value = Math.round(Math.random() * 1000) / 100;
+        // card.value = Math.round(Math.random() * 1000) / 100;
+        card.value = a.dataSync()[i]; 
 
         // [-] create card base div
         card.createBaseDiv();
@@ -97,7 +124,10 @@ function init() {
             "," +
             0.7 + // random alpha -> (Math.random() * 0.5 + 0.5)
             ")";
+        
+        // Cards.push(card); 
     }
+    // console.log(Cards); 
 
     // [+] rendererç
     rendererCSS = new CSS3DRenderer();
@@ -185,35 +215,3 @@ function render() {
 // console.log("tensor_array[1] \t:", tensor_arr[1]);
 // console.log("tensor_array[0][2] \t:", tensor_arr[0][2]);
 // console.log("tensor_array[0][2][1] \t:", tensor_arr[0][2][1]);
-
-// TEST tfjs tensor
-import * as tf from "@tensorflow/tfjs";
-
-const a = tf.tensor([
-    [1, 2],
-    [3, 4],
-]);
-// console.log("type of a :", typeof a);
-// // console.log('if a is a tf tensor ?', tf.is_tensor(a));
-// console.log("shape of a :", a.shape);
-// console.log("dtype of a :", a.dtype);
-// console.log("values of a :", a.values);
-// a.print();
-
-// .array() returns a flattened array
-// a.array().then((array) => console.log(array));
-
-// .data() maintains tensor's data structure in array
-// a.data().then((data) => console.log(data));
-
-// const x = tf.tensor([1, 2, 3, 4]);
-// const y = x.square();
-// y.print();
-
-// y.dispose();
-// y.print();
-
-const y = tf.tidy(() => {
-    const result = a.square().log().neg();
-    return result;
-});
