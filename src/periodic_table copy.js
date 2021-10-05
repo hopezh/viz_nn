@@ -9,8 +9,6 @@ import {
     CSS3DObject,
 } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 
-import Card from "./Card.js";
-
 // [+] get attributes of each elment
 // prettier-ignore
 const table = [

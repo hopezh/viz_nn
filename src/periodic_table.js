@@ -30,7 +30,7 @@ function init() {
         0.1,
         100000
     );
-    camera.position.set(1000, 1000, 2500);
+    camera.position.set(500, 500, 1000);
 
     // [+] scene
     scene = new THREE.Scene();
@@ -51,7 +51,7 @@ function init() {
 
     // [+] axis helper
     const axesHelper = new THREE.AxesHelper(100);
-    scene.add(axesHelper);;
+    scene.add(axesHelper);
 
     //////////////////////////////////////////////
     // TEST create card objects from Card class
@@ -99,7 +99,7 @@ function init() {
             ")";
     }
 
-    // [+] renderer
+    // [+] rendererç
     rendererCSS = new CSS3DRenderer();
     rendererCSS.setSize(window.innerWidth, window.innerHeight);
     rendererCSS.domElement.style.position = "absolute";
@@ -143,7 +143,6 @@ function render() {
 
 // TEST tensorflow.js
 // import * as tf from "@tensorflow/tfjs";
-
 // // Define a model for linear regression.
 // const model = tf.sequential();
 // model.add(
@@ -186,3 +185,35 @@ function render() {
 // console.log("tensor_array[1] \t:", tensor_arr[1]);
 // console.log("tensor_array[0][2] \t:", tensor_arr[0][2]);
 // console.log("tensor_array[0][2][1] \t:", tensor_arr[0][2][1]);
+
+// TEST tfjs tensor
+import * as tf from "@tensorflow/tfjs";
+
+const a = tf.tensor([
+    [1, 2],
+    [3, 4],
+]);
+// console.log("type of a :", typeof a);
+// // console.log('if a is a tf tensor ?', tf.is_tensor(a));
+// console.log("shape of a :", a.shape);
+// console.log("dtype of a :", a.dtype);
+// console.log("values of a :", a.values);
+// a.print();
+
+// .array() returns a flattened array
+// a.array().then((array) => console.log(array));
+
+// .data() maintains tensor's data structure in array
+// a.data().then((data) => console.log(data));
+
+// const x = tf.tensor([1, 2, 3, 4]);
+// const y = x.square();
+// y.print();
+
+// y.dispose();
+// y.print();
+
+const y = tf.tidy(() => {
+    const result = a.square().log().neg();
+    return result;
+});

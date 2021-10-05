@@ -8,7 +8,7 @@ import {
 export default class Card {
     // [+] constructor
     constructor(_idx, _name, _width, _height, _posx, _posy, _posz, _value) {
-        this.idx = _idx; 
+        this.idx = _idx;
         this.name = _name;
 
         this.width = _width;
@@ -25,7 +25,6 @@ export default class Card {
     createBaseDiv() {
         this.baseDiv = document.createElement("div");
         this.baseDiv.className = "cardBase";
-        this.baseDiv.style.backgroundColor = "rgba(0, 127, 127, O.5)";
     }
 
     // [+] create a child div for number
@@ -41,8 +40,8 @@ export default class Card {
         this.css3DObj = new CSS3DObject(this.baseDiv);
     }
 
-    // [+] set position of CSS3DObject 
-    setCSSObjPosition (x, y, z) {
+    // [+] set position of CSS3DObject
+    setCSSObjPosition(x, y, z) {
         this.css3DObj.position.set(x, y, z);
     }
 
