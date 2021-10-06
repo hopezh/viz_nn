@@ -9,6 +9,8 @@ import {
     CSS3DObject,
 } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 
+import { Pane } from "tweakpane";
+
 import * as tf from "@tensorflow/tfjs";
 
 import Card from "./Card.js";
@@ -16,9 +18,6 @@ import Card from "./Card.js";
 // init vars for elements in a scene
 let camera, scene, rendererCSS, rendererWebGL;
 let controls, controls2;
-
-// init list of objects
-const objects = [];
 
 // run main functions to init and animate the scene
 init();
@@ -57,17 +56,45 @@ function init() {
     const axesHelper = new THREE.AxesHelper(100);
     scene.add(axesHelper);
 
+    // card size param
+    // let cardWidth = 90;
+    // let cardHeight = 90;
+
+    // [+] GUI
+    const PARAMS = {
+        cardWidth: 90,
+        cardHeight: 90,
+    };
+
+    const pane = new Pane({
+        title: "Parameters",
+    });
+
+    pane.addInput(PARAMS, "cardWidth", {
+        min: 10,
+        max: 100,
+    }).on("change", (value) => {
+        // PARAMS.cardWidth.set(value);
+    });
+
+    pane.addInput(PARAMS, "cardHeight", {
+        min: 10,
+        max: 100,
+    });
+
+    // console.log(PARAMS.cardWidth);
+
     //////////////////////////////////////////////
     // TEST create tensor
     //////////////////////////////////////////////
 
     const a = tf.randomNormal([2, 3, 2]);
-    console.log("tensor a   \t:", a);
-    console.log("shape of a \t:", a.shape);
-    console.log("dim of a   \t:", a.shape.length);
-    console.log("size of a  \t:", a.size);
-    console.log("dtype of a \t:", a.dtype);
-    a.print();
+    // console.log("tensor a   \t:", a);
+    // console.log("shape of a \t:", a.shape);
+    // console.log("dim of a   \t:", a.shape.length);
+    // console.log("size of a  \t:", a.size);
+    // console.log("dtype of a \t:", a.dtype);
+    // a.print();
 
     // a.array().then((array) => console.log("a.array() :\n", array));
     // a.data().then((data) => console.log("a.data() :\n", data));
@@ -88,6 +115,13 @@ function init() {
         // [-] create card object
 
         const card = new Card(i, "card " + String(i), "96px", "96px");
+        // const card = new Card(
+        //     i,
+        //     "card " + String(i),
+        //     String(PARAMS.cardWidth) + "px",
+        //     String(PARAMS.cardHeight) + "px"
+        // );
+
         // [-] assign a random value to card
         // card.value = Math.round(Math.random() * 1000) / 100;
         card.value = a.dataSync()[i];
@@ -132,7 +166,7 @@ function init() {
         Cards.push(card);
     }
 
-    console.log("Cards \t:", Cards);
+    // console.log("Cards \t:", Cards);
 
     // [+] rendererç
     rendererCSS = new CSS3DRenderer();
@@ -166,7 +200,6 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame(animate);
     TWEEN.update();
-    // controls.update();
     render();
 }
 
