@@ -9,8 +9,6 @@ import {
     CSS3DObject,
 } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 
-import { Pane } from "tweakpane";
-
 import * as tf from "@tensorflow/tfjs";
 
 import Card from "./Card.js";
@@ -61,29 +59,7 @@ function init() {
     // let cardHeight = 90;
 
     // [+] GUI
-    const PARAMS = {
-        cardWidth: 90,
-        cardHeight: 90,
-    };
-
-    const pane = new Pane({
-        title: "Parameters",
-    });
-
-    pane.addInput(PARAMS, "cardWidth", {
-        min: 10,
-        max: 100,
-    }).on("change", (value) => {
-        // PARAMS.cardWidth.set(value);
-    });
-
-    pane.addInput(PARAMS, "cardHeight", {
-        min: 10,
-        max: 100,
-    });
-
-    // console.log(PARAMS.cardWidth);
-
+    
     //////////////////////////////////////////////
     // TEST create tensor
     //////////////////////////////////////////////
@@ -113,14 +89,7 @@ function init() {
 
     for (let i = 0; i < a.size; i += 1) {
         // [-] create card object
-
         const card = new Card(i, "card " + String(i), "96px", "96px");
-        // const card = new Card(
-        //     i,
-        //     "card " + String(i),
-        //     String(PARAMS.cardWidth) + "px",
-        //     String(PARAMS.cardHeight) + "px"
-        // );
 
         // [-] assign a random value to card
         // card.value = Math.round(Math.random() * 1000) / 100;
