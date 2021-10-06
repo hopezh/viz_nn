@@ -61,36 +61,40 @@ function init() {
     // TEST create tensor
     //////////////////////////////////////////////
 
-    const a = tf.randomNormal([4, 3, 2]);
-    console.log("a:", a);
-    // console.log("type of a :", typeof a);
-    console.log("shape of a :", a.shape);
-    console.log('dim of a:', a.shape.length);
-    console.log("size of a :", a.size);
-    // console.log("dtype of a :", a.dtype);
-    // console.log("values of a :", a.values);
+    const a = tf.randomNormal([2, 3, 2]);
+    console.log("tensor a   \t:", a);
+    console.log("shape of a \t:", a.shape);
+    console.log("dim of a   \t:", a.shape.length);
+    console.log("size of a  \t:", a.size);
+    console.log("dtype of a \t:", a.dtype);
     a.print();
 
-    // a.array().then((array) => console.log("a.array : ", array));
-    // a.data().then((data) => console.log("a.data : ", data));
-    // console.log(a.dataSync()[0]);
+    // a.array().then((array) => console.log("a.array() :\n", array));
+    // a.data().then((data) => console.log("a.data() :\n", data));
+    // console.log("a.arraySync() :\n", a.arraySync());
+    // console.log("a.dataSync() :\n", a.dataSync());
+
+    // const b = new Array(2, 2);
+    // console.log("b : ", b);
 
     //////////////////////////////////////////////
     // TEST create card objects from Card class
     //
     //////////////////////////////////////////////
-    // prettier-ignore
 
-    const Cards = Array([4, 3, 2]);
-    console.log(Cards); 
+    const Cards = [];
 
     for (let i = 0; i < a.size; i += 1) {
         // [-] create card object
 
-        const card = new Card(i, "card " + String(i), "96px", "96px"); 
+        const card = new Card(i, "card " + String(i), "96px", "96px");
         // [-] assign a random value to card
         // card.value = Math.round(Math.random() * 1000) / 100;
-        card.value = a.dataSync()[i]; 
+        card.value = a.dataSync()[i];
+        // a.data().then((data) => {
+        //     card.value = data[i];
+        // }); // synchronous method
+        // console.log(card.value);
 
         // [-] create card base div
         card.createBaseDiv();
@@ -112,9 +116,9 @@ function init() {
         // "card.css3DObj.position.x = Math.random() * 4000 - 2000;"
 
         // [.] change card base div style
-        card.baseDiv.style.width           = card.width;
-        card.baseDiv.style.height          = card.height;
-        card.baseDiv.style.backgroundColor = 
+        card.baseDiv.style.width = card.width;
+        card.baseDiv.style.height = card.height;
+        card.baseDiv.style.backgroundColor =
             "rgba(" +
             Math.random() * 255 +
             "," +
@@ -124,10 +128,11 @@ function init() {
             "," +
             0.7 + // random alpha -> (Math.random() * 0.5 + 0.5)
             ")";
-        
-        // Cards.push(card); 
+
+        Cards.push(card);
     }
-    // console.log(Cards); 
+
+    console.log("Cards \t:", Cards);
 
     // [+] rendererç
     rendererCSS = new CSS3DRenderer();
