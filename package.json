@@ -12,6 +12,7 @@
   "dependencies": {
     "@tensorflow/tfjs": "^3.9.0",
     "plotly.js-dist": "^2.5.1",
-    "three": "^0.132.2"
+    "three": "^0.132.2",
+    "tweakpane": "^3.0.5"
   }
 }
