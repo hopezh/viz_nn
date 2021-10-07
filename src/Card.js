@@ -49,4 +49,8 @@ export default class Card {
     addToScene(scene) {
         scene.add(this.css3DObj);
     }
+
+    setWidth(width) {
+        this.baseDiv.style.width = String(width) + 'px';
+    }
 }

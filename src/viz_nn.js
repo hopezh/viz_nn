@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { TWEEN } from "three/examples/jsm/libs/tween.module.min.js";
 
-// import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import {
@@ -9,13 +8,15 @@ import {
     CSS3DObject,
 } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+
 import * as tf from "@tensorflow/tfjs";
 
 import Card from "./Card.js";
 
 // init vars for elements in a scene
-let camera, scene, rendererCSS, rendererWebGL;
-let controls, controls2;
+let camera, scene, rendererCSS3D, rendererWebGL;
+let controlsCSS, controlsWebGL;
 
 // run main functions to init and animate the scene
 init();
@@ -58,11 +59,10 @@ function init() {
     // let cardWidth = 90;
     // let cardHeight = 90;
 
-    // [+] GUI
-    
     //////////////////////////////////////////////
     // TEST create tensor
     //////////////////////////////////////////////
+    const Cards = [];
 
     const a = tf.randomNormal([2, 3, 2]);
     // console.log("tensor a   \t:", a);
@@ -84,8 +84,6 @@ function init() {
     // TEST create card objects from Card class
     //
     //////////////////////////////////////////////
-
-    const Cards = [];
 
     for (let i = 0; i < a.size; i += 1) {
         // [-] create card object
@@ -137,20 +135,55 @@ function init() {
 
     // console.log("Cards \t:", Cards);
 
-    // [+] rendererç
-    rendererCSS = new CSS3DRenderer();
-    rendererCSS.setSize(window.innerWidth, window.innerHeight);
-    rendererCSS.domElement.style.position = "absolute";
-    rendererCSS.domElement.style.top = "0px";
-    document.getElementById("container").appendChild(rendererCSS.domElement);
+    // for (const card of Cards) {
+    //     // console.log(card);
+    //     card.setWidth(10);
+    // }
 
+    // [+] renderers
+    // [-] CSS3D renderer
+    rendererCSS3D = new CSS3DRenderer();
+    rendererCSS3D.setSize(window.innerWidth, window.innerHeight);
+    rendererCSS3D.domElement.style.position = "absolute";
+    rendererCSS3D.domElement.style.top = "0px";
+    document.getElementById("container").appendChild(rendererCSS3D.domElement);
+    // [-] webgl renderer
     rendererWebGL = new THREE.WebGLRenderer({ antialias: true });
     rendererWebGL.setPixelRatio(window.devicePixelRatio);
     rendererWebGL.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(rendererWebGL.domElement);
 
     // [+] controls
-    const controls = new OrbitControls(camera, rendererCSS.domElement);
+    const controlsCSS = new OrbitControls(camera, rendererCSS3D.domElement);
+
+    // [+] GUI
+    // [-] gui params
+    const guiParams = {
+        cardWidth: 50,
+        cardHeight: 50,
+    };
+
+    // [-] gui param update func
+    function update() {
+        console.log("guiParam.cardWidth :", guiParams.cardWidth);
+        // Cards.forEach(item => console.log('card.baseDiv.style.width :', item.baseDiv.style.width));
+        // Cards.forEach(item => {item.baseDiv.style.width = guiParams.cardWidth});
+        // Cards.forEach(function (item, index) {
+        // console.log(index);
+        // console.log('card.baseDiv.style.width :', item.baseDiv.style.width);
+        // item.baseDiv.style.width = guiParams.cardWidth;
+        // });
+    }
+
+    // [-] create gui and add contents
+    const gui = new GUI();
+    gui.add(guiParams, "cardWidth", 10, 100, 1).onChange(function (value) {
+        Cards.forEach(function (item, index) {
+            // console.log(item);
+            item.setWidth(value);
+        });
+    });
+    // gui.add(guiParams, "cardHeight", 10, 100, 1).onChange(update);
 
     // [+] window event listener
     window.addEventListener("resize", onWindowResize, false);
@@ -160,7 +193,7 @@ function init() {
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    rendererCSS.setSize(window.innerWidth, window.innerHeight);
+    rendererCSS3D.setSize(window.innerWidth, window.innerHeight);
     rendererWebGL.setSize(window.innerWidth, window.innerHeight);
     // render();
 }
@@ -174,7 +207,7 @@ function animate() {
 
 // [+] render
 function render() {
-    rendererCSS.render(scene, camera);
+    rendererCSS3D.render(scene, camera);
     rendererWebGL.render(scene, camera);
 }
 
