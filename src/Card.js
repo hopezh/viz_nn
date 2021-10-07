@@ -1,5 +1,8 @@
+// [+] import modules
 import * as THREE from "three";
+
 import { Vector3 } from "three";
+
 import {
     CSS3DRenderer,
     CSS3DObject,
@@ -50,7 +53,13 @@ export default class Card {
         scene.add(this.css3DObj);
     }
 
+    // [+] set base div width
     setWidth(width) {
-        this.baseDiv.style.width = String(width) + 'px';
+        this.baseDiv.style.width = String(width) + "px";
+    }
+
+    // [+] set base div height
+    setHeight(height) {
+        this.baseDiv.style.height = String(height) + "px";
     }
 }

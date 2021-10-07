@@ -8,6 +8,8 @@ import {
     CSS3DObject,
 } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 
+import Stats from "three/examples/jsm/libs/stats.module.js";
+
 import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
 import * as tf from "@tensorflow/tfjs";
@@ -17,6 +19,8 @@ import Card from "./Card.js";
 // init vars for elements in a scene
 let camera, scene, rendererCSS3D, rendererWebGL;
 let controlsCSS, controlsWebGL;
+let stats;
+let gui;
 
 // run main functions to init and animate the scene
 init();
@@ -62,7 +66,6 @@ function init() {
     //////////////////////////////////////////////
     // TEST create tensor
     //////////////////////////////////////////////
-    const Cards = [];
 
     const a = tf.randomNormal([2, 3, 2]);
     // console.log("tensor a   \t:", a);
@@ -85,9 +88,18 @@ function init() {
     //
     //////////////////////////////////////////////
 
+    const Cards = [];
+    const cardInitWidth = 96;
+    const cardInitHeight = 96;
+
     for (let i = 0; i < a.size; i += 1) {
         // [-] create card object
-        const card = new Card(i, "card " + String(i), "96px", "96px");
+        const card = new Card(
+            i,
+            "card " + String(i),
+            String(cardInitWidth) + "px",
+            String(cardInitHeight) + "px"
+        );
 
         // [-] assign a random value to card
         // card.value = Math.round(Math.random() * 1000) / 100;
@@ -141,7 +153,7 @@ function init() {
     // }
 
     // [+] renderers
-    // [-] CSS3D renderer
+    // [-] css3D renderer
     rendererCSS3D = new CSS3DRenderer();
     rendererCSS3D.setSize(window.innerWidth, window.innerHeight);
     rendererCSS3D.domElement.style.position = "absolute";
@@ -156,34 +168,33 @@ function init() {
     // [+] controls
     const controlsCSS = new OrbitControls(camera, rendererCSS3D.domElement);
 
+    // [+] stats
+    stats = new Stats();
+    document.body.appendChild(stats.dom);
+
     // [+] GUI
     // [-] gui params
     const guiParams = {
-        cardWidth: 50,
-        cardHeight: 50,
+        cardWidth: cardInitWidth,
+        cardHeight: cardInitHeight,
     };
 
-    // [-] gui param update func
-    function update() {
-        console.log("guiParam.cardWidth :", guiParams.cardWidth);
-        // Cards.forEach(item => console.log('card.baseDiv.style.width :', item.baseDiv.style.width));
-        // Cards.forEach(item => {item.baseDiv.style.width = guiParams.cardWidth});
-        // Cards.forEach(function (item, index) {
-        // console.log(index);
-        // console.log('card.baseDiv.style.width :', item.baseDiv.style.width);
-        // item.baseDiv.style.width = guiParams.cardWidth;
-        // });
-    }
-
-    // [-] create gui and add contents
-    const gui = new GUI();
+    // [-] create gui
+    gui = new GUI({ width: 300 });
+    // [-] add gui items and onChange func
     gui.add(guiParams, "cardWidth", 10, 100, 1).onChange(function (value) {
         Cards.forEach(function (item, index) {
             // console.log(item);
             item.setWidth(value);
         });
     });
-    // gui.add(guiParams, "cardHeight", 10, 100, 1).onChange(update);
+
+    gui.add(guiParams, "cardHeight", 10, 100, 1).onChange(function (value) {
+        Cards.forEach(function (item, index) {
+            // console.log(item);
+            item.setHeight(value);
+        });
+    });
 
     // [+] window event listener
     window.addEventListener("resize", onWindowResize, false);
@@ -201,8 +212,9 @@ function onWindowResize() {
 // [+] animate
 function animate() {
     requestAnimationFrame(animate);
-    TWEEN.update();
+    // TWEEN.update();
     render();
+    stats.update();
 }
 
 // [+] render

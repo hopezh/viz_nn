@@ -20,8 +20,8 @@ a:hover {
 
 #info {
     position: absolute;
-    top: 30%;
-    left: 5%;
+    top: 40%;
+    left: 3%;
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
@@ -32,7 +32,7 @@ a:hover {
     -ms-user-select: none;
     user-select: none;
     /* pointer-events: none; */
-    z-index: 1; /* TODO Solve this in HTML */
+    z-index: 1;
 }
 
 #info:hover {
