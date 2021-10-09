@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { TWEEN } from "three/examples/jsm/libs/tween.module.min.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
@@ -29,7 +28,7 @@ animate();
 function init() {
     // [+] scene
     scene = new THREE.Scene();
-    scene.background = new THREE.Color().setHSL(0.6, 0, 1);
+    // scene.background = new THREE.Color().setHSL(0.6, 0, 1);
     // scene.fog = new THREE.Fog(scene.background, 1, 5000);
 
     // [+] camera
@@ -43,39 +42,39 @@ function init() {
 
     // [+] lights
     // [-] hemisphere light
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
-    hemiLight.color.setHSL(0.6, 1, 0.6);
-    hemiLight.groundColor.setHSL(0.095, 1, 0.75);
-    hemiLight.position.set(0, 0, 0);
-    scene.add(hemiLight);
+    // const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+    // hemiLight.color.setHSL(0.6, 1, 0.6);
+    // hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+    // hemiLight.position.set(0, 0, 0);
+    // scene.add(hemiLight);
 
-    const hemiLightHelper = new THREE.HemisphereLightHelper(hemiLight, 10);
-    scene.add(hemiLightHelper);
+    // const hemiLightHelper = new THREE.HemisphereLightHelper(hemiLight, 10);
+    // scene.add(hemiLightHelper);
 
     // [-] directional light
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2);
-    dirLight.color.setHSL(0.1, 1, 0.95);
-    dirLight.position.set(-20, 10, 10);
-    dirLight.position.multiplyScalar(30);
-    scene.add(dirLight);
+    // const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+    // dirLight.color.setHSL(0.1, 1, 0.95);
+    // dirLight.position.set(-20, 10, 10);
+    // dirLight.position.multiplyScalar(30);
+    // scene.add(dirLight);
 
-    dirLight.castShadow = true;
+    // dirLight.castShadow = true;
 
-    dirLight.shadow.mapSize.width = 2048;
-    dirLight.shadow.mapSize.height = 2048;
+    // dirLight.shadow.mapSize.width = 2048;
+    // dirLight.shadow.mapSize.height = 2048;
 
-    const d = 200;
+    // const d = 200;
 
-    dirLight.shadow.camera.left = -d;
-    dirLight.shadow.camera.right = d;
-    dirLight.shadow.camera.top = d;
-    dirLight.shadow.camera.bottom = -d;
+    // dirLight.shadow.camera.left = -d;
+    // dirLight.shadow.camera.right = d;
+    // dirLight.shadow.camera.top = d;
+    // dirLight.shadow.camera.bottom = -d;
 
-    dirLight.shadow.camera.far = 5000;
-    dirLight.shadow.bias = -0.0001;
+    // dirLight.shadow.camera.far = 5000;
+    // dirLight.shadow.bias = -0.0001;
 
-    const dirLightHelper = new THREE.DirectionalLightHelper(dirLight, 10);
-    scene.add(dirLightHelper);
+    // const dirLightHelper = new THREE.DirectionalLightHelper(dirLight, 10);
+    // scene.add(dirLightHelper);
 
     // [+] grid helper
     const grid_size = 2000;
@@ -94,10 +93,6 @@ function init() {
     // [+] axis helper
     const axesHelper = new THREE.AxesHelper(100);
     scene.add(axesHelper);
-
-    // card size param
-    // let cardWidth = 90;
-    // let cardHeight = 90;
 
     // [+] plane helper
     // const plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 3 );
@@ -129,29 +124,29 @@ function init() {
     // scene.add(ground);
 
     // [+] skydome
-    const vertexShader = document.getElementById("vertexShader").textContent;
-    const fragmentShader =
-        document.getElementById("fragmentShader").textContent;
-    const uniforms = {
-        topColor: { value: new THREE.Color(0x0077ff) },
-        bottomColor: { value: new THREE.Color(0xffffff) },
-        offset: { value: 33 },
-        exponent: { value: 0.6 },
-    };
-    uniforms["topColor"].value.copy(hemiLight.color);
+    // const vertexShader = document.getElementById("vertexShader").textContent;
+    // const fragmentShader =
+    //     document.getElementById("fragmentShader").textContent;
+    // const uniforms = {
+    //     topColor: { value: new THREE.Color(0x0077ff) },
+    //     bottomColor: { value: new THREE.Color(0xffffff) },
+    //     offset: { value: 33 },
+    //     exponent: { value: 0.6 },
+    // };
+    // uniforms["topColor"].value.copy(hemiLight.color);
 
     // scene.fog.color.copy(uniforms["bottomColor"].value);
 
-    const skyGeo = new THREE.SphereGeometry(4000, 32, 15);
-    const skyMat = new THREE.ShaderMaterial({
-        uniforms: uniforms,
-        vertexShader: vertexShader,
-        fragmentShader: fragmentShader,
-        side: THREE.BackSide,
-    });
+    // const skyGeo = new THREE.SphereGeometry(4000, 32, 15);
+    // const skyMat = new THREE.ShaderMaterial({
+    //     uniforms: uniforms,
+    //     vertexShader: vertexShader,
+    //     fragmentShader: fragmentShader,
+    //     side: THREE.BackSide,
+    // });
 
-    const sky = new THREE.Mesh(skyGeo, skyMat);
-    scene.add(sky);
+    // const sky = new THREE.Mesh(skyGeo, skyMat);
+    // scene.add(sky);
 
     //////////////////////////////////////////////
     // TEST create tensor
@@ -159,19 +154,17 @@ function init() {
 
     const a = tf.randomNormal([2, 3, 2]);
     // console.log("tensor a   \t:", a);
+    // console.log('type of a \t:', typeof(a));
     // console.log("shape of a \t:", a.shape);
     // console.log("dim of a   \t:", a.shape.length);
     // console.log("size of a  \t:", a.size);
     // console.log("dtype of a \t:", a.dtype);
-    // a.print();
+    a.print();
 
     // a.array().then((array) => console.log("a.array() :\n", array));
     // a.data().then((data) => console.log("a.data() :\n", data));
     // console.log("a.arraySync() :\n", a.arraySync());
     // console.log("a.dataSync() :\n", a.dataSync());
-
-    // const b = new Array(2, 2);
-    // console.log("b : ", b);
 
     //////////////////////////////////////////////
     // TEST create card objects from Card class
@@ -184,12 +177,7 @@ function init() {
 
     for (let i = 0; i < a.size; i += 1) {
         // [-] create card object
-        const card = new Card(
-            i,
-            "card " + String(i),
-            String(cardInitWidth) + "px",
-            String(cardInitHeight) + "px"
-        );
+        const card = new Card(i, "card " + String(i));
 
         // [-] assign a random value to card
         // card.value = Math.round(Math.random() * 1000) / 100;
@@ -212,15 +200,15 @@ function init() {
         card.addToScene(scene);
 
         // [.] change css obj position
-        card.setCSSObjPosition(i * 100, 0, 0);
+        card.setPosition(i * 100, 0, 0);
         // or, use:
         // card.css3DObj.position.set(i * 100, 0, 0);
         // or, use:
         // "card.css3DObj.position.x = Math.random() * 4000 - 2000;"
 
         // [.] change card base div style
-        card.baseDiv.style.width = card.width;
-        card.baseDiv.style.height = card.height;
+        card.baseDiv.style.width = String(cardInitWidth) + "px";
+        card.baseDiv.style.height = String(cardInitHeight) + "px";
         card.baseDiv.style.backgroundColor =
             "rgba(" +
             Math.random() * 255 +
@@ -255,7 +243,7 @@ function init() {
     rendererWebGL.setPixelRatio(window.devicePixelRatio);
     rendererWebGL.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(rendererWebGL.domElement);
-    rendererWebGL.shadowMap.enabled = true;
+    // rendererWebGL.shadowMap.enabled = true;
 
     // [+] controls
     const controlsCSS = new OrbitControls(camera, rendererCSS3D.domElement);
@@ -298,13 +286,11 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
     rendererCSS3D.setSize(window.innerWidth, window.innerHeight);
     rendererWebGL.setSize(window.innerWidth, window.innerHeight);
-    // render();
 }
 
 // [+] animate
 function animate() {
     requestAnimationFrame(animate);
-    // TWEEN.update();
     render();
     stats.update();
 }

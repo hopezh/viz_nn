@@ -10,17 +10,9 @@ import {
 
 export default class Card {
     // [+] constructor
-    constructor(_idx, _name, _width, _height, _posx, _posy, _posz, _value) {
+    constructor(_idx, _name, _value) {
         this.idx = _idx;
         this.name = _name;
-
-        this.width = _width;
-        this.height = _height;
-
-        this.posx = _posx;
-        this.posy = _posy;
-        this.posz = _posz;
-
         this.value = _value;
     }
 
@@ -44,7 +36,7 @@ export default class Card {
     }
 
     // [+] set position of CSS3DObject
-    setCSSObjPosition(x, y, z) {
+    setPosition(x, y, z) {
         this.css3DObj.position.set(x, y, z);
     }
 
