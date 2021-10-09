@@ -1,3 +1,4 @@
+// [#] import modules
 import * as THREE from "three";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -15,16 +16,17 @@ import * as tf from "@tensorflow/tfjs";
 
 import Card from "./Card.js";
 
-// init vars for elements in a scene
+// [#] init vars for elements in a scene
 let camera, scene, rendererCSS3D, rendererWebGL;
 let controlsCSS, controlsWebGL;
 let stats;
 let gui;
 
-// run main functions to init and animate the scene
+// [#] run main functions
 init();
 animate();
 
+// [#] init
 function init() {
     // [+] scene
     scene = new THREE.Scene();
@@ -159,7 +161,7 @@ function init() {
     // console.log("dim of a   \t:", a.shape.length);
     // console.log("size of a  \t:", a.size);
     // console.log("dtype of a \t:", a.dtype);
-    a.print();
+    // a.print();
 
     // a.array().then((array) => console.log("a.array() :\n", array));
     // a.data().then((data) => console.log("a.data() :\n", data));
@@ -168,7 +170,6 @@ function init() {
 
     //////////////////////////////////////////////
     // TEST create card objects from Card class
-    //
     //////////////////////////////////////////////
 
     const Cards = [];
@@ -199,14 +200,14 @@ function init() {
         // [-] add card css3DObject to scene
         card.addToScene(scene);
 
-        // [.] change css obj position
+        // [.] change card position
         card.setPosition(i * 100, 0, 0);
         // or, use:
         // card.css3DObj.position.set(i * 100, 0, 0);
         // or, use:
         // "card.css3DObj.position.x = Math.random() * 4000 - 2000;"
 
-        // [.] change card base div style
+        // [.] change card style
         card.baseDiv.style.width = String(cardInitWidth) + "px";
         card.baseDiv.style.height = String(cardInitHeight) + "px";
         card.baseDiv.style.backgroundColor =
@@ -280,7 +281,7 @@ function init() {
     window.addEventListener("resize", onWindowResize, false);
 }
 
-// [+] onWindowResize
+// [#] onWindowResize
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -288,18 +289,20 @@ function onWindowResize() {
     rendererWebGL.setSize(window.innerWidth, window.innerHeight);
 }
 
-// [+] animate
+// [#] animate
 function animate() {
     requestAnimationFrame(animate);
     render();
     stats.update();
 }
 
-// [+] render
+// [#] render
 function render() {
     rendererCSS3D.render(scene, camera);
     rendererWebGL.render(scene, camera);
 }
+
+
 
 // TEST tensorflow.js
 // import * as tf from "@tensorflow/tfjs";
