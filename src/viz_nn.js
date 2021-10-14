@@ -226,6 +226,28 @@ function init() {
 
     // console.log("Cards \t:", Cards);
 
+
+    // TEST create a function that returns a function 
+    function arrayUnflatten (_flattenedArray, _numRows) {
+        console.log('flattened array \t:', _flattenedArray);
+        
+        const len = _flattenedArray.length;
+        console.log('len of array \t:', len);
+        console.log('shape of new array \t:', _numRows, 'x', len/_numRows);
+
+        const unflattenedArray = []; 
+        while (_flattenedArray.length > 0) unflattenedArray.push(_flattenedArray.splice(0, _numRows));
+        // [ref] https://stackoverflow.com/questions/20257889/unflatten-arrays-into-groups-of-fours
+
+        // console.log('unflattenedArray \t:', unflattenedArray);
+
+        return unflattenedArray; 
+    }
+
+    const unflattenedArray = arrayUnflatten(Cards, 2); 
+    console.log('unflattenedArray \t:', unflattenedArray);
+
+
     // for (const card of Cards) {
     //     // console.log(card);
     //     card.setWidth(10);
