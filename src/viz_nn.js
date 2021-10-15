@@ -14,6 +14,8 @@ import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
 import * as tf from "@tensorflow/tfjs";
 
+import Util from "./Util.js";
+
 import Card from "./Card.js";
 
 // [#] init vars for elements in a scene
@@ -224,34 +226,34 @@ function init() {
         Cards.push(card);
     }
 
-    // console.log("Cards \t:", Cards);
+    // console.log("Cards \t:", Cards[0].value);
 
+    // TEST reshape array
+    // [.] flatten an array into a single
+    // const unflattenedArray = Util.arrayUnflatten(Cards, 3);
+    // console.log("unflattenedArray \t:", unflattenedArray);
 
-    // TEST create a function that returns a function 
-    function arrayUnflatten (_flattenedArray, _numRows) {
-        console.log('flattened array \t:', _flattenedArray);
-        
-        const len = _flattenedArray.length;
-        console.log('len of array \t:', len);
-        console.log('shape of new array \t:', _numRows, 'x', len/_numRows);
+    // [.] reshape an arry to one in arbitray shape 
+    const newShape = [2, 2, 3];
+    const CardsReshaped = Util.reshapeArr(Cards, newShape);
+    console.log(CardsReshaped[1][1][0].value);
 
-        const unflattenedArray = []; 
-        while (_flattenedArray.length > 0) unflattenedArray.push(_flattenedArray.splice(0, _numRows));
-        // [ref] https://stackoverflow.com/questions/20257889/unflatten-arrays-into-groups-of-fours
+    // [.] get shape or size of an array 
+    // console.log(Util.getShape(CardsReshaped));
+    // console.log(Util.getSize(CardsReshaped));    
 
-        // console.log('unflattenedArray \t:', unflattenedArray);
+    // function Z(arr, dim) {
+    //     let elemIndex = 0;
+    //     console.log("1st item of arr :", arr[elemIndex]);
 
-        return unflattenedArray; 
-    }
+    //     let results = [];
 
-    const unflattenedArray = arrayUnflatten(Cards, 2); 
-    console.log('unflattenedArray \t:', unflattenedArray);
+    //     let currentDimIdx = dim.length - 1;
+    //     console.log("current dim idx :", currentDimIdx);
 
-
-    // for (const card of Cards) {
-    //     // console.log(card);
-    //     card.setWidth(10);
     // }
+
+    // console.log(Z(A, C));
 
     // [+] renderers
     // [-] css3D renderer
@@ -323,8 +325,6 @@ function render() {
     rendererCSS3D.render(scene, camera);
     rendererWebGL.render(scene, camera);
 }
-
-
 
 // TEST tensorflow.js
 // import * as tf from "@tensorflow/tfjs";
