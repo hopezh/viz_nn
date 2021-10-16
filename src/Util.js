@@ -5,6 +5,7 @@ export default class Util {
      * @param   {Array} shape shape of target array
      * @returns {Array} a new array in the shape specified
      */
+    // [+] reshape array (opt 1)
     static reshapeArr(arr, shape) {
         // [ref] https://stackoverflow.com/a/69584753/3776170
         let elemIndex = 0;
@@ -30,6 +31,35 @@ export default class Util {
         return _nest(0);
     }
 
+    // [+] reshape array (opt 2)
+    // [-] the reshape function
+    // note that the input "shape" doesn't include the last dimension
+    // ...i.e. [2, 3], or [3], should be used,
+    // ...instead of [2, 3, 2], or [3, 4], for a flattened array of 12 elements
+    // prettier-ignore
+    static reshapeArr2(arr, shape) { 
+        if (shape.length < 1) 
+            return arr;
+        else
+            return this.cut(arr, arr.length / shape[0])
+            .map(
+                (r) => this.reshapeArr2(r, shape.slice(1))
+            );
+    }
+
+    // [-] the cut function
+    // [ref] https://stackoverflow.com/a/69588900/3776170
+    // prettier-ignore
+    static cut(arr, n) {
+        if (n >= arr.length) 
+            return [arr];
+        else 
+            return [arr.slice(0, n), 
+                    ...this.cut(arr.slice(n), n)
+            ];
+    }
+
+    // [+] get array shape
     // [ref] https://stackoverflow.com/a/10253903/3776170
     static getShape(a) {
         var shape = [];
@@ -44,12 +74,14 @@ export default class Util {
         return shape;
     }
 
+    // [+] get array size
     // [ref] https://stackoverflow.com/a/67578497/3776170
     static getSize(a) {
         var size = a.join(",").split(",").length;
         return size;
     }
 
+    // [T] create 2D array from flat array
     // [ref] https://stackoverflow.com/questions/20257889/unflatten-arrays-into-groups-of-fours
     static arrayUnflatten(_flattenedArray, _numRows) {
         const len = _flattenedArray.length;

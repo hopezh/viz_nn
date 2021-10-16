@@ -233,14 +233,15 @@ function init() {
     // const unflattenedArray = Util.arrayUnflatten(Cards, 3);
     // console.log("unflattenedArray \t:", unflattenedArray);
 
-    // [.] reshape an arry to one in arbitray shape 
+    // [.] reshape an arry to one in arbitray shape
     const newShape = [2, 2, 3];
     const CardsReshaped = Util.reshapeArr(Cards, newShape);
     console.log(CardsReshaped[1][1][0].value);
+    console.log(JSON.stringify(CardsReshaped[0][0][0])); 
 
-    // [.] get shape or size of an array 
+    // [.] get shape or size of an array
     // console.log(Util.getShape(CardsReshaped));
-    // console.log(Util.getSize(CardsReshaped));    
+    // console.log(Util.getSize(CardsReshaped));
 
     // function Z(arr, dim) {
     //     let elemIndex = 0;
@@ -370,3 +371,10 @@ function render() {
 // console.log("tensor_array[1] \t:", tensor_arr[1]);
 // console.log("tensor_array[0][2] \t:", tensor_arr[0][2]);
 // console.log("tensor_array[0][2][1] \t:", tensor_arr[0][2][1]);
+
+// const A = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+// const shape = [4, 3];   
+// console.log(JSON.stringify(Util.reshapeArr2(A, [6])));
+// console.log(JSON.stringify(Util.reshapeArr2(A, shape.slice(0, -1))));
+// console.log(JSON.stringify(Util.reshapeArr(A, shape)));
+
