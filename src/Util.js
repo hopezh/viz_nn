@@ -6,7 +6,8 @@ export default class Util {
      * @returns {Array} a new array in the shape specified
      */
     // [+] reshape array (opt 1)
-    static reshapeArr(arr, shape) {
+    static reshapeArr(_arr, shape) {
+        let arr = _arr; 
         // [ref] https://stackoverflow.com/a/69584753/3776170
         let elemIndex = 0;
 

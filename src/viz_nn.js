@@ -42,43 +42,7 @@ function init() {
         0.1,
         100000
     );
-    camera.position.set(500, 1000, 2500);
-
-    // [+] lights
-    // [-] hemisphere light
-    // const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
-    // hemiLight.color.setHSL(0.6, 1, 0.6);
-    // hemiLight.groundColor.setHSL(0.095, 1, 0.75);
-    // hemiLight.position.set(0, 0, 0);
-    // scene.add(hemiLight);
-
-    // const hemiLightHelper = new THREE.HemisphereLightHelper(hemiLight, 10);
-    // scene.add(hemiLightHelper);
-
-    // [-] directional light
-    // const dirLight = new THREE.DirectionalLight(0xffffff, 2);
-    // dirLight.color.setHSL(0.1, 1, 0.95);
-    // dirLight.position.set(-20, 10, 10);
-    // dirLight.position.multiplyScalar(30);
-    // scene.add(dirLight);
-
-    // dirLight.castShadow = true;
-
-    // dirLight.shadow.mapSize.width = 2048;
-    // dirLight.shadow.mapSize.height = 2048;
-
-    // const d = 200;
-
-    // dirLight.shadow.camera.left = -d;
-    // dirLight.shadow.camera.right = d;
-    // dirLight.shadow.camera.top = d;
-    // dirLight.shadow.camera.bottom = -d;
-
-    // dirLight.shadow.camera.far = 5000;
-    // dirLight.shadow.bias = -0.0001;
-
-    // const dirLightHelper = new THREE.DirectionalLightHelper(dirLight, 10);
-    // scene.add(dirLightHelper);
+    camera.position.set(0, 0, 3000);
 
     // [+] grid helper
     const grid_size = 2000;
@@ -96,70 +60,17 @@ function init() {
 
     // [+] axis helper
     const axesHelper = new THREE.AxesHelper(100);
+    axesHelper.position.set(-1000, -0, -1000);
     scene.add(axesHelper);
 
-    // [+] plane helper
-    // const plane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 3 );
-    // const helper = new THREE.PlaneHelper( plane, 1000, 0xffff00 );
-    // scene.add( helper );
-
-    // [+] box
-    // let geometry = new THREE.BoxGeometry(100, 100, 100);
-    // let material = new THREE.MeshPhongMaterial({
-    //     color: 0xff0000,
-    //     shininess: 150,
-    //     specular: 0x222222,
-    // });
-    // let cube = new THREE.Mesh(geometry, material);
-    // cube.position.set(-200, 100, 200);
-    // cube.castShadow = true;
-    // cube.receiveShadow = true;
-    // scene.add(cube);
-
-    // [+] ground
-    // const groundGeo = new THREE.PlaneGeometry(2000, 2000);
-    // const groundMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
-    // groundMat.color.setHSL(0.095, 1, 0.75);
-
-    // const ground = new THREE.Mesh(groundGeo, groundMat);
-    // ground.position.y = -10;
-    // ground.rotation.x = -Math.PI / 2;
-    // ground.receiveShadow = true;
-    // scene.add(ground);
-
-    // [+] skydome
-    // const vertexShader = document.getElementById("vertexShader").textContent;
-    // const fragmentShader =
-    //     document.getElementById("fragmentShader").textContent;
-    // const uniforms = {
-    //     topColor: { value: new THREE.Color(0x0077ff) },
-    //     bottomColor: { value: new THREE.Color(0xffffff) },
-    //     offset: { value: 33 },
-    //     exponent: { value: 0.6 },
-    // };
-    // uniforms["topColor"].value.copy(hemiLight.color);
-
-    // scene.fog.color.copy(uniforms["bottomColor"].value);
-
-    // const skyGeo = new THREE.SphereGeometry(4000, 32, 15);
-    // const skyMat = new THREE.ShaderMaterial({
-    //     uniforms: uniforms,
-    //     vertexShader: vertexShader,
-    //     fragmentShader: fragmentShader,
-    //     side: THREE.BackSide,
-    // });
-
-    // const sky = new THREE.Mesh(skyGeo, skyMat);
-    // scene.add(sky);
-
     //////////////////////////////////////////////
-    // TEST create tensor
+    // [T] create tensor
     //////////////////////////////////////////////
 
-    const a = tf.randomNormal([2, 3, 2]);
+    const tensor = tf.randomNormal([3, 10, 10]);
     // console.log("tensor a   \t:", a);
     // console.log('type of a \t:', typeof(a));
-    // console.log("shape of a \t:", a.shape);
+    console.log("shape of tensor \t:", tensor.shape);
     // console.log("dim of a   \t:", a.shape.length);
     // console.log("size of a  \t:", a.size);
     // console.log("dtype of a \t:", a.dtype);
@@ -171,20 +82,20 @@ function init() {
     // console.log("a.dataSync() :\n", a.dataSync());
 
     //////////////////////////////////////////////
-    // TEST create card objects from Card class
+    // [T] create card objects from Card class
     //////////////////////////////////////////////
 
     const Cards = [];
     const cardInitWidth = 96;
     const cardInitHeight = 96;
 
-    for (let i = 0; i < a.size; i += 1) {
+    for (let i = 0; i < tensor.size; i += 1) {
         // [-] create card object
         const card = new Card(i, "card " + String(i));
 
         // [-] assign a random value to card
         // card.value = Math.round(Math.random() * 1000) / 100;
-        card.value = a.dataSync()[i];
+        card.value = tensor.dataSync()[i];
         // a.data().then((data) => {
         //     card.value = data[i];
         // }); // synchronous method
@@ -196,13 +107,14 @@ function init() {
         // [-] create a child div num for card
         card.createNumDiv();
 
-        // [-] convert card to a css3DObject
+        // [-] creat a css3DObject for card
         card.createCSS3DObj();
 
         // [-] add card css3DObject to scene
         card.addToScene(scene);
 
         // [.] change card position
+        // place cards in a row
         card.setPosition(i * 100, 0, 0);
         // or, use:
         // card.css3DObj.position.set(i * 100, 0, 0);
@@ -226,19 +138,35 @@ function init() {
         Cards.push(card);
     }
 
+    const CardsReshaped = Util.reshapeArr(Cards, tensor.shape);
+    console.log(CardsReshaped);
+
+    const shift = 0;
+    for (let i = 0; i < tensor.shape[0]; i++) {
+        for (let j = 0; j < tensor.shape[1]; j++) {
+            for (let k = 0; k < tensor.shape[2]; k++) {
+                CardsReshaped[i][j][k].setPosition(
+                    k * 100 + i * shift,
+                    j * 100 + i * shift,
+                    -i * 300
+                );
+            }
+        }
+    }
+
     // console.log("Cards \t:", Cards[0].value);
 
-    // TEST reshape array
+    // [T] reshape array
     // [.] flatten an array into a single
     // const unflattenedArray = Util.arrayUnflatten(Cards, 3);
     // console.log("unflattenedArray \t:", unflattenedArray);
 
     // [.] reshape an arry to one in arbitray shape
-    const newShape = [2, 2, 3];
-    const CardsReshaped = Util.reshapeArr(Cards, newShape);
-    console.log(CardsReshaped[1][1][0].value);
-    console.log(JSON.stringify(CardsReshaped[0][0][0])); 
-    
+    // const newShape = [2, 2, 3];
+    // const CardsReshaped = Util.reshapeArr(Cards, newShape);
+    // console.log(CardsReshaped[1][1][0].value);
+    // console.log(JSON.stringify(CardsReshaped[0][0][0]));
+
     // [+] renderers
     // [-] css3D renderer
     rendererCSS3D = new CSS3DRenderer();
@@ -270,6 +198,7 @@ function init() {
 
     // [-] create gui
     gui = new GUI({ width: 300 });
+
     // [-] add gui items and onChange func
     gui.add(guiParams, "cardWidth", 10, 100, 1).onChange(function (value) {
         Cards.forEach(function (item, index) {
@@ -310,7 +239,10 @@ function render() {
     rendererWebGL.render(scene, camera);
 }
 
-// TEST tensorflow.js
+//////////////////////////////////////////////
+// [T] tensorflow.js
+//////////////////////////////////////////////
+
 // import * as tf from "@tensorflow/tfjs";
 // // Define a model for linear regression.
 // const model = tf.sequential();
@@ -342,7 +274,9 @@ function render() {
 //     // Open the browser devtools to see the output
 // });
 
-// TEST conver TF tensor to JS array
+//////////////////////////////////////////////
+// [T] conver TF tensor to JS array
+//////////////////////////////////////////////
 // const tensor_arr = tf
 //     .tensor([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], [2, 3, 2])
 //     .arraySync();
@@ -356,8 +290,7 @@ function render() {
 // console.log("tensor_array[0][2][1] \t:", tensor_arr[0][2][1]);
 
 // const A = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-// const shape = [4, 3];   
+// const shape = [4, 3];
 // console.log(JSON.stringify(Util.reshapeArr2(A, [6])));
 // console.log(JSON.stringify(Util.reshapeArr2(A, shape.slice(0, -1))));
 // console.log(JSON.stringify(Util.reshapeArr(A, shape)));
-
