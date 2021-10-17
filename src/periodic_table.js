@@ -9,6 +9,8 @@ import {
     CSS3DObject,
 } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 
+import Stats from "three/examples/jsm/libs/stats.module.js";
+
 // [+] table : contents of each elment
 // prettier-ignore
 const table = [
@@ -137,6 +139,7 @@ const table = [
 let camera, scene, renderer, rendererWebGL;
 let controls, controls2;
 let num_input_units = 3;
+let stats;
 
 // init list of objects
 const objects = [];
@@ -400,7 +403,9 @@ function init() {
         false
     );
 
-    //
+    // [+] stats
+    stats = new Stats();
+    document.body.appendChild(stats.dom);
 
     window.addEventListener("resize", onWindowResize, false);
 }
@@ -451,11 +456,13 @@ function onWindowResize() {
     // render();
 }
 
+// [#] animate
 function animate() {
     requestAnimationFrame(animate);
     TWEEN.update();
     // controls.update();
     render();
+    stats.update();
 }
 
 function render() {

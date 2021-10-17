@@ -1,5 +1,42 @@
+body {
+    margin: 0;
+    background-color: #000;
+    color: #fff;
+    font-family: Monospace;
+    font-size: 13px;
+    line-height: 24px;
+    overscroll-behavior: none;
+}
+
 a {
-    color: #8ff;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: rgba(255, 255, 0, 1);
+}
+
+#info {
+    position: absolute;
+    top: 25%;
+    left: 3%;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.4);
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* pointer-events: none; */
+    z-index: 1;
+}
+
+#info:hover {
+    color: rgba(0, 0, 255, 1);
 }
 
 #menu {
