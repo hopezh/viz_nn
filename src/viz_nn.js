@@ -36,7 +36,7 @@ const targets = {
     row: [],
     random: [],
 };
-let duration = 1000;
+let duration = 5000;
 
 // [#] run main functions
 init();
@@ -81,7 +81,7 @@ function init() {
     // [T] create tensor
     //////////////////////////////////////////////
 
-    const tensor = tf.randomNormal([2, 3, 4]);
+    const tensor = tf.randomNormal([3, 4, 5]);
     // console.log("tensor a   \t:", a);
     // console.log('type of a \t:', typeof(a));
     console.log("shape of tensor \t:", tensor.shape);
@@ -304,7 +304,7 @@ function transform(targets, duration) {
                 },
                 (i / 100) * duration + duration
             )
-            .easing(TWEEN.Easing.Exponential.InOut)
+            .easing(TWEEN.Easing.Linear.None)
             .start();
 
         new TWEEN.Tween(object.rotation)
@@ -316,7 +316,7 @@ function transform(targets, duration) {
                 },
                 (i / 100) * duration + duration
             )
-            .easing(TWEEN.Easing.Exponential.InOut)
+            .easing(TWEEN.Easing.Linear.None)
             .start();
     }
 
