@@ -12,17 +12,31 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
+import { TWEEN } from "three/examples/jsm/libs/tween.module.min.js";
+
 import * as tf from "@tensorflow/tfjs";
 
 import Util from "./Util.js";
 
 import Card from "./Card.js";
+import { tensor } from "@tensorflow/tfjs-core";
 
-// [#] init vars for elements in a scene
+// [#] init variables
 let camera, scene, rendererCSS3D, rendererWebGL;
 let controlsCSS, controlsWebGL;
 let stats;
 let gui;
+const Cards = [];
+const targets = {
+    table: [],
+    sphere: [],
+    helix: [],
+    grid: [],
+    column: [],
+    row: [],
+    random: [],
+};
+let duration = 1000;
 
 // [#] run main functions
 init();
@@ -42,7 +56,7 @@ function init() {
         0.1,
         100000
     );
-    camera.position.set(0, 0, 3000);
+    camera.position.set(1000, 2000, 3000);
 
     // [+] grid helper
     const grid_size = 2000;
@@ -67,12 +81,12 @@ function init() {
     // [T] create tensor
     //////////////////////////////////////////////
 
-    const tensor = tf.randomNormal([3, 10, 10]);
+    const tensor = tf.randomNormal([2, 3, 4]);
     // console.log("tensor a   \t:", a);
     // console.log('type of a \t:', typeof(a));
     console.log("shape of tensor \t:", tensor.shape);
     // console.log("dim of a   \t:", a.shape.length);
-    // console.log("size of a  \t:", a.size);
+    console.log("size of tensor \t:", tensor.size);
     // console.log("dtype of a \t:", a.dtype);
     // a.print();
 
@@ -85,10 +99,10 @@ function init() {
     // [T] create card objects from Card class
     //////////////////////////////////////////////
 
-    const Cards = [];
     const cardInitWidth = 96;
     const cardInitHeight = 96;
 
+    // [+] create Cards
     for (let i = 0; i < tensor.size; i += 1) {
         // [-] create card object
         const card = new Card(i, "card " + String(i));
@@ -115,7 +129,7 @@ function init() {
 
         // [.] change card position
         // place cards in a row
-        card.setPosition(i * 100, 0, 0);
+        // card.setPosition(i * 100, 0, 0);
         // or, use:
         // card.css3DObj.position.set(i * 100, 0, 0);
         // or, use:
@@ -132,40 +146,94 @@ function init() {
             "," +
             Math.random() * 255 +
             "," +
-            0.7 + // random alpha -> (Math.random() * 0.5 + 0.5)
+            0.8 + // random alpha -> (Math.random() * 0.5 + 0.5)
             ")";
 
         Cards.push(card);
     }
 
-    const CardsReshaped = Util.reshapeArr(Cards, tensor.shape);
-    console.log(CardsReshaped);
+    // [+] reshpae Cards array
+    // const CardsReshaped = Util.reshapeArr(Cards, tensor.shape);
+    // console.log('shape of CardsReshaped :', Util.getShape(CardsReshaped));
 
-    const shift = 0;
+    // const shift = 0;
+    // for (let i = 0; i < tensor.shape[0]; i++) {
+    //     for (let j = 0; j < tensor.shape[1]; j++) {
+    //         for (let k = 0; k < tensor.shape[2]; k++) {
+    //             CardsReshaped[i][j][k].setPosition(
+    //                 k * 100 + i * shift,
+    //                 j * 100 + i * shift,
+    //                 -i * 300
+    //             );
+    //         }
+    //     }
+    // }
+
+    // [+] layouts
+    // [-] grid
+
     for (let i = 0; i < tensor.shape[0]; i++) {
         for (let j = 0; j < tensor.shape[1]; j++) {
             for (let k = 0; k < tensor.shape[2]; k++) {
-                CardsReshaped[i][j][k].setPosition(
-                    k * 100 + i * shift,
-                    j * 100 + i * shift,
-                    -i * 300
-                );
+                const anchor = new THREE.Object3D();
+
+                anchor.position.x = k * 100;
+                anchor.position.y = -j * 100;
+                anchor.position.z = -i * 300;
+
+                targets.grid.push(anchor);
             }
         }
     }
 
-    // console.log("Cards \t:", Cards[0].value);
+    // [-] row
+    for (let i = 0; i < tensor.size; i++) {
+        const anchor = new THREE.Object3D();
 
-    // [T] reshape array
-    // [.] flatten an array into a single
-    // const unflattenedArray = Util.arrayUnflatten(Cards, 3);
-    // console.log("unflattenedArray \t:", unflattenedArray);
+        anchor.position.set(i * 100, 0, 0);
 
-    // [.] reshape an arry to one in arbitray shape
-    // const newShape = [2, 2, 3];
-    // const CardsReshaped = Util.reshapeArr(Cards, newShape);
-    // console.log(CardsReshaped[1][1][0].value);
-    // console.log(JSON.stringify(CardsReshaped[0][0][0]));
+        targets.row.push(anchor);
+    }
+
+    // [-] column
+    for (let i = 0; i < tensor.size; i++) {
+        const anchor = new THREE.Object3D();
+
+        anchor.position.set(0, -i * 100, 0);
+
+        targets.column.push(anchor);
+    }
+
+    // [+] button behavior
+    // [-] grid button
+    const buttonGrid = document.getElementById("grid");
+    buttonGrid.addEventListener(
+        "click",
+        function () {
+            transform(targets.grid, duration);
+        },
+        false
+    );
+
+    // [-] row button`
+    const buttonRow = document.getElementById("row");
+    buttonRow.addEventListener(
+        "click",
+        function () {
+            transform(targets.row, duration);
+        },
+        false
+    );
+
+    // [-] column button`
+    const buttonColumn = document.getElementById("column");
+    buttonColumn.addEventListener(
+        "click",
+        function () {
+            transform(targets.column, 3000);
+        },
+        false
+    );
 
     // [+] renderers
     // [-] css3D renderer
@@ -218,6 +286,46 @@ function init() {
     window.addEventListener("resize", onWindowResize, false);
 }
 
+// [#] transform
+function transform(targets, duration) {
+    TWEEN.removeAll();
+
+    for (let i = 0; i < Cards.length; i++) {
+        const object = Cards[i].css3DObj;
+
+        const target = targets[i];
+
+        new TWEEN.Tween(object.position)
+            .to(
+                {
+                    x: target.position.x,
+                    y: target.position.y,
+                    z: target.position.z,
+                },
+                (i / 100) * duration + duration
+            )
+            .easing(TWEEN.Easing.Exponential.InOut)
+            .start();
+
+        new TWEEN.Tween(object.rotation)
+            .to(
+                {
+                    x: target.rotation.x,
+                    y: target.rotation.y,
+                    z: target.rotation.z,
+                },
+                (i / 100) * duration + duration
+            )
+            .easing(TWEEN.Easing.Exponential.InOut)
+            .start();
+    }
+
+    new TWEEN.Tween(this)
+        .to({}, duration * 5)
+        .onUpdate(render)
+        .start();
+}
+
 // [#] onWindowResize
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -229,6 +337,7 @@ function onWindowResize() {
 // [#] animate
 function animate() {
     requestAnimationFrame(animate);
+    TWEEN.update();
     render();
     stats.update();
 }
