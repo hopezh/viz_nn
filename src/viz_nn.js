@@ -238,24 +238,7 @@ function init() {
     const CardsReshaped = Util.reshapeArr(Cards, newShape);
     console.log(CardsReshaped[1][1][0].value);
     console.log(JSON.stringify(CardsReshaped[0][0][0])); 
-
-    // [.] get shape or size of an array
-    // console.log(Util.getShape(CardsReshaped));
-    // console.log(Util.getSize(CardsReshaped));
-
-    // function Z(arr, dim) {
-    //     let elemIndex = 0;
-    //     console.log("1st item of arr :", arr[elemIndex]);
-
-    //     let results = [];
-
-    //     let currentDimIdx = dim.length - 1;
-    //     console.log("current dim idx :", currentDimIdx);
-
-    // }
-
-    // console.log(Z(A, C));
-
+    
     // [+] renderers
     // [-] css3D renderer
     rendererCSS3D = new CSS3DRenderer();
