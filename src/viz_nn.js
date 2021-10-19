@@ -36,7 +36,7 @@ const targets = {
     row: [],
     random: [],
 };
-let duration = 5000;
+let duration = 2000;
 
 // [#] run main functions
 init();
