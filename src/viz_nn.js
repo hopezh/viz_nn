@@ -15,21 +15,21 @@ import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 import { TWEEN } from "three/examples/jsm/libs/tween.module.min.js";
 
 import * as tf from "@tensorflow/tfjs";
+// import { tensor } from "@tensorflow/tfjs-core";
 
 import Util from "./Util.js";
 
 import Card from "./Card.js";
-import { tensor } from "@tensorflow/tfjs-core";
 
 // [#] init vars
 let camera, scene, rendererCSS3D, rendererWebGL;
 let controlsCSS, controlsWebGL;
 let stats;
 let gui;
-let cardWidth = 96; 
-let cardHeight = 96; 
+let cardWidth = 96;
+let cardHeight = 96;
 let cardSpacingH = 8;
-let cardSpacingV = 8; 
+let cardSpacingV = 8;
 const Cards = [];
 const targets = {
     table: [],
@@ -40,7 +40,7 @@ const targets = {
     row: [],
     random: [],
 };
-let duration = 2000;
+let duration = 1000;
 
 // [#] run main functions
 init();
@@ -85,7 +85,7 @@ function init() {
     // [T] create tensor
     //////////////////////////////////////////////
 
-    const tensor = tf.randomNormal([3, 4, 5]);
+    const tensor = tf.randomNormal([3, 5, 7]);
     // console.log("tensor a   \t:", a);
     // console.log('type of a \t:', typeof(a));
     console.log("shape of tensor \t:", tensor.shape);
@@ -280,7 +280,7 @@ function init() {
     cardFolder
         .add(guiParams, "_cardWidth", 10, 100, 1)
         .onChange(function (value) {
-            cardWidth = value; 
+            cardWidth = value;
             Cards.forEach(function (item, index) {
                 // console.log(item);
                 item.setWidth(cardWidth);

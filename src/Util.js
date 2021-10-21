@@ -1,13 +1,9 @@
+import * as tf from "@tensorflow/tfjs";
+
 export default class Util {
-    /**
-     * reshape an array by the shape provided
-     * @param   {Array} arr input array (1D)
-     * @param   {Array} shape shape of target array
-     * @returns {Array} a new array in the shape specified
-     */
     // [+] reshape array (opt 1)
     static reshapeArr(_arr, shape) {
-        let arr = _arr; 
+        let arr = _arr;
         // [ref] https://stackoverflow.com/a/69584753/3776170
         let elemIndex = 0;
 
@@ -93,5 +89,21 @@ export default class Util {
             unflattenedArray.push(_flattenedArray.splice(0, _numRows));
 
         return unflattenedArray;
+    }
+
+    static tensor3DToArr3D(_tensor3D) {
+        const arr1D = [];
+
+        for (let i = 0; i < _tensor3D.size; i++) {
+            const item = _tensor3D.dataSync()[i];
+            arr1D.push(item);
+        }
+
+        const tensor3DShape = _tensor3D.shape;
+        // console.log(tensor3DShape);
+
+        const arr3D = this.reshapeArr(arr1D, tensor3DShape);
+
+        return arr3D;
     }
 }
