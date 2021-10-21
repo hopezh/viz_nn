@@ -21,7 +21,7 @@ import Util from "./Util.js";
 import Card from "./Card.js";
 import { tensor } from "@tensorflow/tfjs-core";
 
-// [#] init variables
+// [#] init vars 
 let camera, scene, rendererCSS3D, rendererWebGL;
 let controlsCSS, controlsWebGL;
 let stats;
