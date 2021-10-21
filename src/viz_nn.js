@@ -21,11 +21,15 @@ import Util from "./Util.js";
 import Card from "./Card.js";
 import { tensor } from "@tensorflow/tfjs-core";
 
-// [#] init vars 
+// [#] init vars
 let camera, scene, rendererCSS3D, rendererWebGL;
 let controlsCSS, controlsWebGL;
 let stats;
 let gui;
+let cardWidth = 96; 
+let cardHeight = 96; 
+let cardSpacingH = 8;
+let cardSpacingV = 8; 
 const Cards = [];
 const targets = {
     table: [],
@@ -259,28 +263,45 @@ function init() {
 
     // [+] GUI
     // [-] gui params
+    // prettier-ignore
     const guiParams = {
-        cardWidth: cardInitWidth,
-        cardHeight: cardInitHeight,
+        _cardWidth   : cardWidth,
+        _cardHeight  : cardHeight,
+        _cardSpacingH: cardSpacingH,
+        _cardSpacingV: cardSpacingV,
     };
 
     // [-] create gui
     gui = new GUI({ width: 300 });
+    const cardFolder = gui.addFolder("Card");
+    cardFolder.open();
 
     // [-] add gui items and onChange func
-    gui.add(guiParams, "cardWidth", 10, 100, 1).onChange(function (value) {
-        Cards.forEach(function (item, index) {
-            // console.log(item);
-            item.setWidth(value);
+    cardFolder
+        .add(guiParams, "_cardWidth", 10, 100, 1)
+        .onChange(function (value) {
+            cardWidth = value; 
+            Cards.forEach(function (item, index) {
+                // console.log(item);
+                item.setWidth(cardWidth);
+            });
         });
-    });
 
-    gui.add(guiParams, "cardHeight", 10, 100, 1).onChange(function (value) {
-        Cards.forEach(function (item, index) {
-            // console.log(item);
-            item.setHeight(value);
+    cardFolder
+        .add(guiParams, "_cardHeight", 10, 100, 1)
+        .onChange(function (value) {
+            cardHeight = value;
+            Cards.forEach(function (item, index) {
+                // console.log(item);
+                item.setHeight(cardHeight);
+            });
         });
-    });
+
+    cardFolder
+        .add(guiParams, "_cardSpacingH", 0, 100, 1)
+        .onChange(function (value) {
+            cardSpacingH = value;
+        });
 
     // [+] window event listener
     window.addEventListener("resize", onWindowResize, false);
