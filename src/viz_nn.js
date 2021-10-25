@@ -62,6 +62,12 @@ function init() {
     );
     camera.position.set(1000, 2000, 3000);
 
+    // [+] light
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(1, 1, 1).normalize();
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0x555555, 2));
+
     // [+] grid helper
     const grid_size = 2000;
     const grid_div = 20;
@@ -304,6 +310,7 @@ function init() {
 
     // [+] window event listener
     window.addEventListener("resize", onWindowResize, false);
+
 }
 
 // [#] transform
@@ -328,7 +335,7 @@ function transform(targets, duration) {
             .start();
 
         new TWEEN.Tween(object.rotation)
-            .to( 
+            .to(
                 {
                     x: target.rotation.x,
                     y: target.rotation.y,
