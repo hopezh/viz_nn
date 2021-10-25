@@ -12,12 +12,16 @@ import Util from "./Util.js";
 export default class Stack {
     // [+] constructor
     // prettier-ignore
-    constructor(_idx, _arr, _shape, _origin, _cards) {
+    constructor(_idx, _tensor, _origin, _cards) {
         this.idx    = _idx;
-        this.arr    = _arr;
-        this.shape  = _shape;
+        this.tensor = _tensor;
         this.origin = _origin;
         this.cards  = _cards;
+    }
+
+    getArr(){
+        this.arr = this.tensor.arraySync(); 
+        return this.arr; 
     }
 
     createCards() {}

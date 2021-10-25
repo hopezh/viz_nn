@@ -1,3 +1,5 @@
+import * as THREE from "three";
+
 import { Vector3 } from "three";
 
 import * as tf from "@tensorflow/tfjs";
@@ -9,16 +11,20 @@ import Stack from "./src/Stack.js";
 
 // ----------------------------------------------------------------
 
+// create a random tensor
 const tensor = tf.randomNormal([3, 4, 5]);
 tensor.print();
 
-const arrFromTensor = Util.tensor3DToArr3D(tensor);
-console.log("arrFromTensor \t: ", arrFromTensor);
+// const s2 = new Stack(42, tensor);
 
-let stackId = 100;
-let stackArr = arrFromTensor;
-let stackShape = tensor.shape;
-let stackOrigin = new Vector3(1000, 0, 0);
+// const s2_tensor = s2.tensor;
+// console.log("s2, tensor : ", s2_tensor);
+// console.log("s2, tensor, shape : ", s2_tensor.shape);
 
-const stack_01 = new Stack(stackId, stackArr, stackShape, stackOrigin);
-console.log("stack_01 init \t: ", stack_01);
+// const s2_arr = s2.getArr();
+// console.log("s2, arr : ", s2_arr);
+
+// const s2_tensorReshaped = s2_tensor.reshape([12, 5]);
+
+// s2.tensor = s2_tensorReshaped;
+// console.log(s2.tensor.shape);

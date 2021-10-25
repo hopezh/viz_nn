@@ -85,7 +85,7 @@ function init() {
     // [T] create tensor
     //////////////////////////////////////////////
 
-    const tensor = tf.randomNormal([3, 5, 7]);
+    const tensor = tf.randomNormal([3, 10, 10]);
     // console.log("tensor a   \t:", a);
     // console.log('type of a \t:', typeof(a));
     console.log("shape of tensor \t:", tensor.shape);
@@ -152,7 +152,6 @@ function init() {
             "," +
             0.8 + // random alpha -> (Math.random() * 0.5 + 0.5)
             ")";
-
         Cards.push(card);
     }
 
@@ -325,11 +324,11 @@ function transform(targets, duration) {
                 },
                 (i / 100) * duration + duration
             )
-            .easing(TWEEN.Easing.Linear.None)
+            .easing(TWEEN.Easing.Quintic.InOut)
             .start();
 
         new TWEEN.Tween(object.rotation)
-            .to(
+            .to( 
                 {
                     x: target.rotation.x,
                     y: target.rotation.y,
@@ -337,7 +336,7 @@ function transform(targets, duration) {
                 },
                 (i / 100) * duration + duration
             )
-            .easing(TWEEN.Easing.Linear.None)
+            .easing(TWEEN.Easing.Quintic.InOut)
             .start();
     }
 
