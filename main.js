@@ -15,6 +15,8 @@ import Stack from "./src/Stack.js";
 const tensor = tf.randomNormal([3, 4, 5]);
 tensor.print();
 
+// console.log(tensor.constructor.name == "Tensor");
+
 // const s2 = new Stack(42, tensor);
 
 // const s2_tensor = s2.tensor;
