@@ -106,4 +106,30 @@ export default class Util {
 
         return arr3D;
     }
+
+    /**
+     * create rounded rectangle
+     * @param {Shape} shape     a THREE.Shape object
+     * @param {Number} x        x position
+     * @param {Number} y        y position
+     * @param {Number} width    rectangle width
+     * @param {Number} height   rectangle height
+     * @param {Number} radius   corner radius
+     */
+    static roundedRect(shape, x, y, width, height, radius) {
+        shape.moveTo(x, y + radius);
+        shape.lineTo(x, y + height - radius);
+        shape.quadraticCurveTo(x, y + height, x + radius, y + height);
+        shape.lineTo(x + width - radius, y + height);
+        shape.quadraticCurveTo(
+            x + width,
+            y + height,
+            x + width,
+            y + height - radius
+        );
+        shape.lineTo(x + width, y + radius);
+        shape.quadraticCurveTo(x + width, y, x + width - radius, y);
+        shape.lineTo(x + radius, y);
+        shape.quadraticCurveTo(x, y, x, y + radius);
+    }
 }
