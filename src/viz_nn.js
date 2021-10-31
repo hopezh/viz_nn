@@ -43,6 +43,11 @@ const targets = {
 };
 let duration = 1000;
 
+let mesh;
+const amount = 10;
+const count = Math.pow(amount, 3);
+const color = new THREE.Color();
+
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;
 let aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
@@ -66,7 +71,7 @@ function init() {
         0.1,
         100000
     );
-    camera.position.set(300, 500, 1000);
+    camera.position.set(10, 20, 30);
 
     // cameraOrtho = new THREE.OrthographicCamera(
     //     (0.5 * frustumSize * aspect) / -2,
@@ -82,7 +87,7 @@ function init() {
     const light = new THREE.DirectionalLight(0xffffff, 1);
     light.position.set(1, 1, 1).normalize();
     scene.add(light);
-    scene.add(new THREE.AmbientLight(0x555555, 2));
+    scene.add(new THREE.AmbientLight(0x555555, 0.5));
 
     // [+] grid helper
     const grid_size = 2000;
@@ -104,23 +109,58 @@ function init() {
     scene.add(axesHelper);
 
     // [+] create rounded rect shape
-    let group = new THREE.Group();
-    group.position.y = 0;
-
     // [-] create rounded rect
     const roundedRectShape1 = new THREE.Shape();
-    const roundedRectShape2 = new THREE.Shape();
+    // const roundedRectShape2 = new THREE.Shape();
 
-    Util.roundedRect(roundedRectShape1, 0, 0, 100, 100, 15);
-    Util.roundedRect(roundedRectShape2, 0, 0, 100, 100, 15);
+    Util.roundedRect(roundedRectShape1, 0, 0, 0.7, 0.7, 0.2);
+    // Util.roundedRect(roundedRectShape2, 0, 0, 100, 100, 15);
 
     // [-] addShape
-    const roundedRectMesh1 = Util.addShape(roundedRectShape1, 0xff0000, 0, 0, 0, -Math.PI/2, 0, 0, 1);
-    const roundedRectMesh2 = Util.addShape(roundedRectShape2, 0x00ff00, 100, 0, 0, 0, 0, 0, 1);
+    const roundedRectMesh1 = Util.addShape(
+        roundedRectShape1,
+        0xff0000,
+        0,
+        0,
+        0,
+        -Math.PI / 2,
+        0,
+        0,
+        1
+    );
+    // const roundedRectMesh2 = Util.addShape(roundedRectShape2, 0x00ff00, 100, 0, 0, 0, 0, 0, 1);
 
-    scene.add(roundedRectMesh1);
-    scene.add(roundedRectMesh2);
+    // [-] create instancedMesh base
+    // const geometry = new THREE.IcosahedronGeometry( 0.5, 3 );
+    // const geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
+    const material = new THREE.MeshPhongMaterial();
+    // const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+    // mesh = new THREE.InstancedMesh(roundedRectMesh1, material, count);
+    const geometry = new THREE.ShapeGeometry(roundedRectShape1); 
+    mesh = new THREE.InstancedMesh(geometry, material, count);
 
+    let i = 0;
+    const offset = (amount - 1) / 2;
+
+    const matrix = new THREE.Matrix4();
+
+    for (let x = 0; x < amount; x++) {
+        for (let y = 0; y < amount; y++) {
+            for (let z = 0; z < amount; z++) {
+                matrix.setPosition(offset - x, offset - y, offset - z);
+
+                mesh.setMatrixAt(i, matrix);
+                mesh.setColorAt(i, color);
+
+                i++;
+            }
+        }
+    }
+
+    scene.add(mesh);
+
+    // scene.add(roundedRectMesh1);
+    // scene.add(roundedRectMesh2);
 
     //////////////////////////////////////////////
     // [T] create tensor
@@ -291,7 +331,8 @@ function init() {
     rendererWebGL.setPixelRatio(window.devicePixelRatio);
     rendererWebGL.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(rendererWebGL.domElement);
-    // rendererWebGL.shadowMap.enabled = true;
+    rendererWebGL.shadowMap.enabled = true;
+    rendererWebGL.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
     // [+] controls
     const controlsCSS = new OrbitControls(camera, rendererCSS3D.domElement);
