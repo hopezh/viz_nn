@@ -17,7 +17,7 @@ tensor.print();
 
 // console.log(tensor.constructor.name == "Tensor");
 
-// const s2 = new Stack(42, tensor);
+const s2 = new Stack(42, tensor);
 
 // const s2_tensor = s2.tensor;
 // console.log("s2, tensor : ", s2_tensor);
