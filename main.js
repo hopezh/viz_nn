@@ -1,6 +1,7 @@
 // [#] import modules
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
 import { Vector3 } from "three";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
@@ -20,6 +21,11 @@ let rendererWebGL;
 let controlsWebGL;
 let stats;
 let gui;
+
+let mesh;
+const amount = 10;
+const count = Math.pow(amount, 3);
+const color = new THREE.Color();
 
 // ============================================================
 // [#] main functions
@@ -44,14 +50,17 @@ function init() {
 
     // [+] light
     // [-] direction light
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-    dirLight.position.set(1, 1, 1).normalize();
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+    dirLight.position.set(10, 10, 10);
     dirLight.castShadow = true;
     scene.add(dirLight);
+    // [.] dir light helper
+    const dirLightHelper = new THREE.DirectionalLightHelper(dirLight, 1);
+    scene.add(dirLightHelper); 
 
     // [.] shadow properties
     dirLight.shadow.mapSize.width = 512; // default
-    dirLight.shadow.mapSize.height = 512; // default 
+    dirLight.shadow.mapSize.height = 512; // default
     dirLight.shadow.camera.near = 0.5; // default
     dirLight.shadow.camera.far = 500; // default
 
@@ -100,6 +109,11 @@ function init() {
         rendererWebGL.domElement
     );
 
+    // const dirLightControl = new TransformControls(cameraPerspective, rendererWebGL.domElement);
+    // dirLightControl.attach(dirLight);
+    // scene.add(dirLightControl);
+    
+
     // [+] stats
     stats = new Stats();
     document.body.appendChild(stats.dom);
@@ -110,21 +124,82 @@ function init() {
     // [+] geometry
     //Create a sphere that cast shadows (but does not receive them)
     const sphereGeometry = new THREE.SphereGeometry(2, 32, 32);
-    const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+    const sphereMaterial = new THREE.MeshStandardMaterial({
+        color: 0xff0000,
+        side: THREE.DoubleSide,
+        // flatShading: true,
+        shadowSide: THREE.DoubleSide,
+    });
     const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphere.castShadow = true; //default is false
-    sphere.receiveShadow = false; //default
+    sphere.receiveShadow = true; //default
     scene.add(sphere);
 
     //Create a plane that receives shadows (but does not cast them)
     const planeGeometry = new THREE.PlaneGeometry(20, 20, 32, 32);
     planeGeometry.rotateX(-Math.PI / 2);
-    planeGeometry.translate(0, -2, 0);
+    planeGeometry.translate(0, -5, 0);
     const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
     planeMaterial.side = THREE.DoubleSide;
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.receiveShadow = true;
     scene.add(plane);
+
+    // [+] create rounded rect shape
+    // [-] create rounded rect
+    const roundedRectShape1 = new THREE.Shape();
+
+    Util.roundedRect(roundedRectShape1, 0, 0, 0.7, 0.7, 0.2);
+
+    // [-] addShape
+    // const roundedRectMesh1 = Util.addShape(
+    //     roundedRectShape1,
+    //     0xffff00,
+    //     0,
+    //     0,
+    //     0,
+    //     -Math.PI / 2,
+    //     0,
+    //     0,
+    //     1
+    // );
+    // const roundedRectMesh2 = Util.addShape(roundedRectShape2, 0x00ff00, 100, 0, 0, 0, 0, 0, 1);
+
+    // [-] create instancedMesh base
+    const material = new THREE.MeshPhongMaterial({
+        color: 0x0000ff,
+        side: THREE.DoubleSide,
+        flatShading: true,
+        // shadowSide: THREE.DoubleSide,
+        opacity: 0.6,
+        transparent: true,
+    });
+    // const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+    // mesh = new THREE.InstancedMesh(roundedRectMesh1, material, count);
+    const geometry = new THREE.ShapeGeometry(roundedRectShape1);
+    mesh = new THREE.InstancedMesh(geometry, material, count);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
+    let i = 0;
+    const offset = (amount - 1) / 2;
+
+    const matrix = new THREE.Matrix4();
+
+    for (let x = 0; x < amount; x++) {
+        for (let y = 0; y < amount; y++) {
+            for (let z = 0; z < amount; z++) {
+                matrix.setPosition(offset - x, offset - y, offset - z);
+
+                mesh.setMatrixAt(i, matrix);
+                mesh.setColorAt(i, color);
+
+                i++;
+            }
+        }
+    }
+
+    scene.add(mesh);
 }
 
 // ============================================================

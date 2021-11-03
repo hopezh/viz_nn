@@ -159,12 +159,16 @@ export default class Util {
             new THREE.MeshPhongMaterial({
                 color: color,
                 side: THREE.DoubleSide,
+                flatShading: true, 
+                shadowSide: THREE.DoubleSide, 
             })
         );
         mesh.position.set(x, y, z);
         mesh.rotation.set(rx, ry, rz);
         mesh.scale.set(s, s, s);
-        // group.add(mesh);
+        // mesh.castShadow = true;
+        // mesh.receiveShadow = true; 
+
         return mesh;
 
         // extruded shape
