@@ -37,6 +37,8 @@ animate();
 function init() {
     // [+] scene
     scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xa0a0a0);
+    // scene.fog = new THREE.Fog(0xa0a0a0, 20, 200);
 
     // [+] camera
     // [-] perspective camera
@@ -49,20 +51,28 @@ function init() {
     cameraPerspective.position.set(10, 20, 30);
 
     // [+] light
-    // [-] direction light
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2);
-    dirLight.position.set(10, 10, 10);
-    dirLight.castShadow = true;
-    scene.add(dirLight);
-    // [.] dir light helper
-    const dirLightHelper = new THREE.DirectionalLightHelper(dirLight, 1);
-    scene.add(dirLightHelper); 
+    // [-] hemi light
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+    hemiLight.position.set(0, 100, 0);
+    hemiLight.matrixAutoUpdate = false;
+    hemiLight.updateMatrix();
+    scene.add(hemiLight);
 
-    // [.] shadow properties
-    dirLight.shadow.mapSize.width = 512; // default
-    dirLight.shadow.mapSize.height = 512; // default
-    dirLight.shadow.camera.near = 0.5; // default
-    dirLight.shadow.camera.far = 500; // default
+    // [-] direction light
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(-40, 50, 50);
+    dirLight.matrixAutoUpdate = false;
+    dirLight.updateMatrix();
+    dirLight.castShadow = true;
+    dirLight.shadow.camera.top = 25;
+    dirLight.shadow.camera.bottom = -25;
+    dirLight.shadow.camera.left = -25;
+    dirLight.shadow.camera.right = 25;
+    dirLight.shadow.camera.near = 1;
+    dirLight.shadow.camera.far = 200;
+    dirLight.shadow.mapSize.x = 2048;
+    dirLight.shadow.mapSize.y = 2048;
+    scene.add(dirLight);
 
     // [-] ambient light
     const ambLight = new THREE.AmbientLight(0x555555, 0.5);
@@ -112,7 +122,6 @@ function init() {
     // const dirLightControl = new TransformControls(cameraPerspective, rendererWebGL.domElement);
     // dirLightControl.attach(dirLight);
     // scene.add(dirLightControl);
-    
 
     // [+] stats
     stats = new Stats();
@@ -135,23 +144,23 @@ function init() {
     sphere.receiveShadow = true; //default
     scene.add(sphere);
 
-    //Create a plane that receives shadows (but does not cast them)
-    const planeGeometry = new THREE.PlaneGeometry(20, 20, 32, 32);
+    // [-] Create a plane
+    const planeGeometry = new THREE.PlaneGeometry(100, 100);
     planeGeometry.rotateX(-Math.PI / 2);
     planeGeometry.translate(0, -5, 0);
-    const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+    const planeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
     planeMaterial.side = THREE.DoubleSide;
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.receiveShadow = true;
     scene.add(plane);
 
-    // [+] create rounded rect shape
-    // [-] create rounded rect
+    // [-] create rounded rect shape
+    // [.] create rounded rect
     const roundedRectShape1 = new THREE.Shape();
 
-    Util.roundedRect(roundedRectShape1, 0, 0, 0.7, 0.7, 0.2);
+    Util.roundedRect(roundedRectShape1, 0, 0, 0.9, 0.9, 0.15);
 
-    // [-] addShape
+    // [.] addShape
     // const roundedRectMesh1 = Util.addShape(
     //     roundedRectShape1,
     //     0xffff00,
@@ -165,13 +174,13 @@ function init() {
     // );
     // const roundedRectMesh2 = Util.addShape(roundedRectShape2, 0x00ff00, 100, 0, 0, 0, 0, 0, 1);
 
-    // [-] create instancedMesh base
+    // [.] create instancedMesh base
     const material = new THREE.MeshPhongMaterial({
-        color: 0x0000ff,
+        color: 0xfffff,
         side: THREE.DoubleSide,
         flatShading: true,
         // shadowSide: THREE.DoubleSide,
-        opacity: 0.6,
+        opacity: 1,
         transparent: true,
     });
     // const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
@@ -192,6 +201,9 @@ function init() {
                 matrix.setPosition(offset - x, offset - y, offset - z);
 
                 mesh.setMatrixAt(i, matrix);
+
+                let color = new THREE.Color();
+                color.setHex(Math.random() * 0xffffff);
                 mesh.setColorAt(i, color);
 
                 i++;
