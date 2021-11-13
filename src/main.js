@@ -9,9 +9,9 @@ import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 import * as tf from "@tensorflow/tfjs";
 // import { tensor } from "@tensorflow/tfjs-core";
 
-import Util from "./src/Util.js";
+import Util from "./Util.js";
 
-import Stack from "./src/Stack.js";
+import Stack from "./Stack.js";
 
 // ============================================================
 // [#] init vars
