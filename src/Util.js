@@ -109,31 +109,35 @@ export default class Util {
     }
 
     /**
-     * create rounded rectangle
-     * @param {Shape}   shape   an empty THREE.Shape object
-     * @param {Number}  x       x position of lower left corner
-     * @param {Number}  y       y position of lower left corner
-     * @param {Number}  width   width of rectangle
-     * @param {Number}  height  height of rectangle
-     * @param {Number}  radius  corner radius
+     * create a shape of rounded rectangle
+     * @param {Number}  _x       x position of lower left corner
+     * @param {Number}  _y       y position of lower left corner
+     * @param {Number}  _width   width of rectangle
+     * @param {Number}  _height  height of rectangle
+     * @param {Number}  _radius  corner radius
      * @see {@link https://github.com/mrdoob/three.js/blob/master/examples/webgl_geometry_shapes.html}
      */
-    static roundedRect(shape, x, y, width, height, radius) {
-        shape.moveTo(x, y + radius);
-        shape.lineTo(x, y + height - radius);
-        shape.quadraticCurveTo(x, y + height, x + radius, y + height);
-        shape.lineTo(x + width - radius, y + height);
+    static rRectShape(_x, _y, _width, _height, _radius) {
+        // [.] init an empty shape
+        const shape = new THREE.Shape();
+
+        // [.] draw rounded rectangle shape
+        shape.moveTo(_x, _y + _radius);
+        shape.lineTo(_x, _y + _height - _radius);
+        shape.quadraticCurveTo(_x, _y + _height, _x + _radius, _y + _height);
+        shape.lineTo(_x + _width - _radius, _y + _height);
         shape.quadraticCurveTo(
-            x + width,
-            y + height,
-            x + width,
-            y + height - radius
+            _x + _width,
+            _y + _height,
+            _x + _width,
+            _y + _height - _radius
         );
-        shape.lineTo(x + width, y + radius);
-        shape.quadraticCurveTo(x + width, y, x + width - radius, y);
-        shape.lineTo(x + radius, y);
-        // shape.lineTo(x, y + radius);
-        shape.quadraticCurveTo(x, y, x, y + radius);
+        shape.lineTo(_x + _width, _y + _radius);
+        shape.quadraticCurveTo(_x + _width, _y, _x + _width - _radius, _y);
+        shape.lineTo(_x + _radius, _y);
+        shape.quadraticCurveTo(_x, _y, _x, _y + _radius);
+
+        return shape;
     }
 
     static addShape(shape, color, x, y, z, rx, ry, rz, s) {
@@ -159,15 +163,15 @@ export default class Util {
             new THREE.MeshPhongMaterial({
                 color: color,
                 side: THREE.DoubleSide,
-                flatShading: true, 
-                shadowSide: THREE.DoubleSide, 
+                flatShading: true,
+                shadowSide: THREE.DoubleSide,
             })
         );
         mesh.position.set(x, y, z);
         mesh.rotation.set(rx, ry, rz);
         mesh.scale.set(s, s, s);
         // mesh.castShadow = true;
-        // mesh.receiveShadow = true; 
+        // mesh.receiveShadow = true;
 
         return mesh;
 

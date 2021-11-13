@@ -28,7 +28,7 @@ const count = Math.pow(amount, 3);
 const color = new THREE.Color();
 
 // ============================================================
-// [#] main functions
+// [#] run main functions
 init();
 animate();
 
@@ -60,7 +60,7 @@ function init() {
 
     // [-] direction light
     const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    dirLight.position.set(-40, 50, 50);
+    dirLight.position.set(-50, 50, 100);
     dirLight.matrixAutoUpdate = false;
     dirLight.updateMatrix();
     dirLight.castShadow = true;
@@ -131,7 +131,7 @@ function init() {
     window.addEventListener("resize", onWindowResize, false);
 
     // [+] geometry
-    //Create a sphere that cast shadows (but does not receive them)
+    // [-] create a sphere
     const sphereGeometry = new THREE.SphereGeometry(2, 32, 32);
     const sphereMaterial = new THREE.MeshStandardMaterial({
         color: 0xff0000,
@@ -149,30 +149,14 @@ function init() {
     planeGeometry.rotateX(-Math.PI / 2);
     planeGeometry.translate(0, -5, 0);
     const planeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
-    planeMaterial.side = THREE.DoubleSide;
+    planeMaterial.side = THREE.FrontSide;
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.receiveShadow = true;
     scene.add(plane);
 
-    // [-] create rounded rect shape
-    // [.] create rounded rect
-    const roundedRectShape1 = new THREE.Shape();
-
-    Util.roundedRect(roundedRectShape1, 0, 0, 0.9, 0.9, 0.15);
-
-    // [.] addShape
-    // const roundedRectMesh1 = Util.addShape(
-    //     roundedRectShape1,
-    //     0xffff00,
-    //     0,
-    //     0,
-    //     0,
-    //     -Math.PI / 2,
-    //     0,
-    //     0,
-    //     1
-    // );
-    // const roundedRectMesh2 = Util.addShape(roundedRectShape2, 0x00ff00, 100, 0, 0, 0, 0, 0, 1);
+    // [-] create rounded rect
+    // [.] create a shape of rounded rectangle
+    const roundedRectShape1 = Util.rRectShape(0, 0, 0.9, 0.9, 0.2);
 
     // [.] create instancedMesh base
     const material = new THREE.MeshPhongMaterial({
