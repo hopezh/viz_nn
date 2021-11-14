@@ -22,9 +22,9 @@ let controlsWebGL;
 let stats;
 let gui;
 
-let mesh;
-const amount = 10;
-const count = Math.pow(amount, 3);
+let instancedMeshes;
+const instanceAmount = 10;
+const instanceCount = Math.pow(instanceAmount, 3);
 const color = new THREE.Color();
 
 // ============================================================
@@ -156,10 +156,10 @@ function init() {
 
     // [-] create rounded rect
     // [.] create a shape of rounded rectangle
-    const roundedRectShape1 = Util.rRectShape(0, 0, 0.9, 0.9, 0.2);
+    const rRectShape = Util.rRectShape(0, 0, 0.9, 0.9, 0.2);
 
-    // [.] create instancedMesh base
-    const material = new THREE.MeshPhongMaterial({
+    // [.] create instancedMeshes base
+    const instanceMat = new THREE.MeshPhongMaterial({
         color: 0xfffff,
         side: THREE.DoubleSide,
         flatShading: true,
@@ -169,33 +169,33 @@ function init() {
     });
     // const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
     // mesh = new THREE.InstancedMesh(roundedRectMesh1, material, count);
-    const geometry = new THREE.ShapeGeometry(roundedRectShape1);
-    mesh = new THREE.InstancedMesh(geometry, material, count);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
+    const instanceGeo = new THREE.ShapeGeometry(rRectShape);
+    instancedMeshes = new THREE.InstancedMesh(instanceGeo, instanceMat, instanceCount);
+    instancedMeshes.castShadow = true;
+    instancedMeshes.receiveShadow = true;
 
     let i = 0;
-    const offset = (amount - 1) / 2;
+    const offset = (instanceAmount - 1) / 2;
 
     const matrix = new THREE.Matrix4();
 
-    for (let x = 0; x < amount; x++) {
-        for (let y = 0; y < amount; y++) {
-            for (let z = 0; z < amount; z++) {
+    for (let x = 0; x < instanceAmount; x++) {
+        for (let y = 0; y < instanceAmount; y++) {
+            for (let z = 0; z < instanceAmount; z++) {
                 matrix.setPosition(offset - x, offset - y, offset - z);
 
-                mesh.setMatrixAt(i, matrix);
+                instancedMeshes.setMatrixAt(i, matrix);
 
                 let color = new THREE.Color();
                 color.setHex(Math.random() * 0xffffff);
-                mesh.setColorAt(i, color);
+                instancedMeshes.setColorAt(i, color);
 
                 i++;
             }
         }
     }
 
-    scene.add(mesh);
+    scene.add(instancedMeshes);
 }
 
 // ============================================================
