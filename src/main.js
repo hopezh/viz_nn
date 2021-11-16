@@ -84,14 +84,35 @@ function init() {
     const grid_div = 20;
     const grid_colorCenLine = "rgb(100, 100, 100)";
     const grid_colorGrid = "rgb(50, 50, 50)";
-    const gridHelper = new THREE.GridHelper(
+    
+    const gridHelper1 = new THREE.GridHelper(
+        grid_size,
+        grid_div/10,
+        grid_colorCenLine,
+        grid_colorGrid
+    );
+    
+    const gridHelper2 = new THREE.GridHelper(
         grid_size,
         grid_div,
         grid_colorCenLine,
         grid_colorGrid
     );
-    gridHelper.position.set(0, 0, 0);
-    scene.add(gridHelper);
+    
+    const gridHelper3 = new THREE.GridHelper(
+        grid_size,
+        grid_div/10,
+        grid_colorCenLine,
+        grid_colorGrid
+    );
+
+    gridHelper1.position.set(0, 0, 0);
+    gridHelper2.position.set(0, 0, 0);
+    gridHelper3.position.set(0, 0, 0);
+    gridHelper2.rotateX(Math.PI / 2);
+    gridHelper3.rotateZ(Math.PI / 2);
+
+    scene.add(gridHelper1, gridHelper2, gridHelper3);
 
     // [-] axis helper
     const axesHelper = new THREE.AxesHelper(2);
@@ -132,7 +153,7 @@ function init() {
 
     // [+] geometry
     // [-] create a sphere
-    const sphereGeometry = new THREE.SphereGeometry(2, 32, 32);
+    const sphereGeometry = new THREE.SphereGeometry(0.2, 32, 32);
     const sphereMaterial = new THREE.MeshStandardMaterial({
         color: 0xff0000,
         side: THREE.DoubleSide,
@@ -156,9 +177,9 @@ function init() {
 
     // [-] create rounded rect
     // [.] create a shape of rounded rectangle
-    const rRectShape = Util.rRectShape(0, 0, 0.9, 0.9, 0.2);
+    const rRectShape = Util.rRectShape(0, 0, 0.95, 0.95, 0.2);
 
-    // [.] create instancedMeshes base
+    // [.] create mat for instanced meshes
     const instanceMat = new THREE.MeshPhongMaterial({
         color: 0xfffff,
         side: THREE.DoubleSide,
@@ -167,10 +188,16 @@ function init() {
         opacity: 1,
         transparent: true,
     });
-    // const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-    // mesh = new THREE.InstancedMesh(roundedRectMesh1, material, count);
+
+    // [.] create geom for instanced meshes
     const instanceGeo = new THREE.ShapeGeometry(rRectShape);
-    instancedMeshes = new THREE.InstancedMesh(instanceGeo, instanceMat, instanceCount);
+
+    // [.] create instanced meshes
+    instancedMeshes = new THREE.InstancedMesh(
+        instanceGeo,
+        instanceMat,
+        instanceCount
+    );
     instancedMeshes.castShadow = true;
     instancedMeshes.receiveShadow = true;
 
@@ -179,10 +206,34 @@ function init() {
 
     const matrix = new THREE.Matrix4();
 
-    for (let x = 0; x < instanceAmount; x++) {
-        for (let y = 0; y < instanceAmount; y++) {
-            for (let z = 0; z < instanceAmount; z++) {
-                matrix.setPosition(offset - x, offset - y, offset - z);
+    // for (let x = 0; x < instanceAmount; x++) {
+    //     for (let y = 0; y < instanceAmount; y++) {
+    //         for (let z = 0; z < instanceAmount; z++) {
+    //             matrix.setPosition(offset - x, offset - y, offset - z);
+
+    //             instancedMeshes.setMatrixAt(i, matrix);
+
+    //             let color = new THREE.Color();
+    //             color.setHex(Math.random() * 0xffffff);
+    //             instancedMeshes.setColorAt(i, color);
+
+    //             i++;
+    //         }
+    //     }
+    // }
+
+    const tensor = tf.randomNormal([3, 4, 5]);
+    const tShape = tensor.shape;
+    console.log('tensor shape :', tShape);
+    const xSize = tShape[2];
+    const ySize = tShape[1];
+    const zSize = tShape[0]; 
+
+    for (let x = 0; x < xSize; x++) {
+        for (let y = 0; y < ySize; y++) {
+            for (let z = 0; z < zSize; z++) {
+                // matrix.setPosition(offset - x, offset - y, offset - z);
+                matrix.setPosition(x, -y, -z);
 
                 instancedMeshes.setMatrixAt(i, matrix);
 
@@ -226,6 +277,8 @@ function render() {
 // create a random tensor
 // const tensor = tf.randomNormal([3, 4, 5]);
 // tensor.print();
+// const shape = tensor.shape;
+// console.log('shape: ', shape);
 
 // console.log(tensor.constructor.name == "Tensor");
 
