@@ -234,6 +234,7 @@ function init() {
             for (let z = 0; z < zSize; z++) {
                 // matrix.setPosition(offset - x, offset - y, offset - z);
                 matrix.setPosition(x, -y, -z);
+                // console.log(matrix);    
 
                 instancedMeshes.setMatrixAt(i, matrix);
 
