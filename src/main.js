@@ -24,7 +24,8 @@ let gui;
 
 let instancedMeshes;
 const instanceAmount = 10;
-const instanceCount = Math.pow(instanceAmount, 3);
+// const instanceCount = Math.pow(instanceAmount, 3);
+let instanceCount;
 const color = new THREE.Color();
 
 // ============================================================
@@ -84,24 +85,24 @@ function init() {
     const grid_div = 20;
     const grid_colorCenLine = "rgb(100, 100, 100)";
     const grid_colorGrid = "rgb(50, 50, 50)";
-    
+
     const gridHelper1 = new THREE.GridHelper(
         grid_size,
-        grid_div/10,
+        grid_div / 10,
         grid_colorCenLine,
         grid_colorGrid
     );
-    
+
     const gridHelper2 = new THREE.GridHelper(
         grid_size,
         grid_div,
         grid_colorCenLine,
         grid_colorGrid
     );
-    
+
     const gridHelper3 = new THREE.GridHelper(
         grid_size,
-        grid_div/10,
+        grid_div / 10,
         grid_colorCenLine,
         grid_colorGrid
     );
@@ -173,7 +174,18 @@ function init() {
     planeMaterial.side = THREE.FrontSide;
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.receiveShadow = true;
-    scene.add(plane);
+    // scene.add(plane);
+
+    // [-] create a tensor
+    const tensor = tf.randomNormal([3, 5, 7]);
+    const tShape = tensor.shape;
+    console.log("tensor shape :", tShape);
+    const C = tShape[0];
+    const H = tShape[1];
+    const W = tShape[2];
+    console.log("C, H, W : ", C, H, W);
+    instanceCount = tensor.dataSync().length;
+    console.log(instanceCount);
 
     // [-] create rounded rect
     // [.] create a shape of rounded rectangle
@@ -222,19 +234,15 @@ function init() {
     //     }
     // }
 
-    const tensor = tf.randomNormal([3, 4, 5]);
-    const tShape = tensor.shape;
-    console.log('tensor shape :', tShape);
-    const xSize = tShape[2];
-    const ySize = tShape[1];
-    const zSize = tShape[0]; 
-
-    for (let x = 0; x < xSize; x++) {
-        for (let y = 0; y < ySize; y++) {
-            for (let z = 0; z < zSize; z++) {
+    for (let z = 0; z < C; z++) {
+        for (let y = 0; y < H; y++) {
+            for (let x = 0; x < W; x++) {
                 // matrix.setPosition(offset - x, offset - y, offset - z);
                 matrix.setPosition(x, -y, -z);
-                // console.log(matrix);    
+
+                // if (i === 0) {
+                //     console.log(matrix);
+                // }
 
                 instancedMeshes.setMatrixAt(i, matrix);
 
