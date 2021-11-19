@@ -152,6 +152,17 @@ function init() {
     // [+] window event listener
     window.addEventListener("resize", onWindowResize, false);
 
+    // [+] create a tensor
+    const tensor = tf.randomNormal([2, 3, 4]);
+    const tShape = tensor.shape;
+    console.log("tensor shape :", tShape);
+    const C = tShape[0];
+    const H = tShape[1];
+    const W = tShape[2];
+    console.log("C, H, W : ", C, H, W);
+    instanceCount = tensor.dataSync().length;
+    console.log(instanceCount);
+
     // [+] geometry
     // [-] create a sphere
     const sphereGeometry = new THREE.SphereGeometry(0.2, 32, 32);
@@ -175,17 +186,6 @@ function init() {
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.receiveShadow = true;
     // scene.add(plane);
-
-    // [-] create a tensor
-    const tensor = tf.randomNormal([3, 5, 7]);
-    const tShape = tensor.shape;
-    console.log("tensor shape :", tShape);
-    const C = tShape[0];
-    const H = tShape[1];
-    const W = tShape[2];
-    console.log("C, H, W : ", C, H, W);
-    instanceCount = tensor.dataSync().length;
-    console.log(instanceCount);
 
     // [-] create rounded rect
     // [.] create a shape of rounded rectangle
@@ -234,15 +234,18 @@ function init() {
     //     }
     // }
 
+    // [.] move each element by matrix 
     for (let z = 0; z < C; z++) {
         for (let y = 0; y < H; y++) {
             for (let x = 0; x < W; x++) {
                 // matrix.setPosition(offset - x, offset - y, offset - z);
                 matrix.setPosition(x, -y, -z);
 
-                // if (i === 0) {
-                //     console.log(matrix);
-                // }
+                if (i === 1) {
+                    console.log(matrix.elements);
+                    const matrix_tensor = tf.tensor(matrix.elements, [4, 4]);
+                    matrix_tensor.print(); 
+                }
 
                 instancedMeshes.setMatrixAt(i, matrix);
 
