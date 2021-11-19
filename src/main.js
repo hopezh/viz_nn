@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
 import { Vector3 } from "three";
+import { VertexNormalsHelper } from "three/examples/jsm/helpers/VertexNormalsHelper.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
@@ -21,6 +22,7 @@ let rendererWebGL;
 let controlsWebGL;
 let stats;
 let gui;
+let vnh;
 
 let instancedMeshes;
 const instanceAmount = 10;
@@ -234,7 +236,7 @@ function init() {
     //     }
     // }
 
-    // [.] move each element by matrix 
+    // [.] move each element by matrix
     for (let z = 0; z < C; z++) {
         for (let y = 0; y < H; y++) {
             for (let x = 0; x < W; x++) {
@@ -244,7 +246,7 @@ function init() {
                 if (i === 1) {
                     console.log(matrix.elements);
                     const matrix_tensor = tf.tensor(matrix.elements, [4, 4]);
-                    matrix_tensor.print(); 
+                    matrix_tensor.print();
                 }
 
                 instancedMeshes.setMatrixAt(i, matrix);
@@ -252,6 +254,9 @@ function init() {
                 let color = new THREE.Color();
                 color.setHex(Math.random() * 0xffffff);
                 instancedMeshes.setColorAt(i, color);
+
+                // vnh = new VertexNormalsHelper(instancedMeshes, 1, 0xff0000);
+                // scene.add(vnh);
 
                 i++;
             }
