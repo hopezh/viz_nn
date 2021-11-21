@@ -55,7 +55,7 @@ function init() {
 
     // [+] light
     // [-] hemi light
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.2);
     hemiLight.position.set(0, 100, 0);
     hemiLight.matrixAutoUpdate = false;
     hemiLight.updateMatrix();
@@ -66,7 +66,7 @@ function init() {
     dirLight.position.set(-50, 50, 100);
     dirLight.matrixAutoUpdate = false;
     dirLight.updateMatrix();
-    dirLight.castShadow = true;
+    // dirLight.castShadow = true;
     dirLight.shadow.camera.top = 25;
     dirLight.shadow.camera.bottom = -25;
     dirLight.shadow.camera.left = -25;
@@ -247,10 +247,10 @@ function init() {
                 instancedMeshes.setMatrixAt(i, matrix);
 
                 let color = new THREE.Color();
-                color.setHex(Math.random() * 0x000000);
+                color.setHex(Math.random() * 0xffffff);
                 instancedMeshes.setColorAt(i, color);
 
-                if (x == 3 && y == 2 && z == 0) {
+                if (z == 0 && y == 1 && x == 2) {
                     // matrix element by default is column major,
                     // ... so need to use tf.transpose to convert it into row major matrix
                     const translation_matrix_row_major = tf.transpose(
@@ -267,8 +267,8 @@ function init() {
                     // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
 
                     let highlight_color = new THREE.Color();
-                    color.setHex(0xffffff);
-                    instancedMeshes.setColorAt(i, highlight_color);
+                    highlight_color.setHex(0x000000);
+                    instancedMeshes.setColorAt(i, highlight_color);   
                 }
 
                 // vnh = new VertexNormalsHelper(instancedMeshes, 1, 0xff0000);
