@@ -237,23 +237,39 @@ function init() {
     // }
 
     // [.] move each element by matrix
-    for (let z = 0; z < C; z++) {
-        for (let y = 0; y < H; y++) {
-            for (let x = 0; x < W; x++) {
+    // prettier-ignore
+    for (let z = 0; z < C; z++) {           // z for Channel, or color channel, or depth 
+        for (let y = 0; y < H; y++) {       // y for Height, or row num 
+            for (let x = 0; x < W; x++) {   // x for Width, or column num
                 // matrix.setPosition(offset - x, offset - y, offset - z);
                 matrix.setPosition(x, -y, -z);
-
-                if (i === 1) {
-                    console.log(matrix.elements);
-                    const matrix_tensor = tf.tensor(matrix.elements, [4, 4]);
-                    matrix_tensor.print();
-                }
 
                 instancedMeshes.setMatrixAt(i, matrix);
 
                 let color = new THREE.Color();
-                color.setHex(Math.random() * 0xffffff);
+                color.setHex(Math.random() * 0x000000);
                 instancedMeshes.setColorAt(i, color);
+
+                if (x == 3 && y == 2 && z == 0) {
+                    // matrix element by default is column major,
+                    // ... so need to use tf.transpose to convert it into row major matrix
+                    const translation_matrix_row_major = tf.transpose(
+                        tf.tensor(matrix.elements, [4, 4])
+                    );
+                    
+                    console.log(
+                        "translation matrix of item ",
+                        i+1,
+                        "is (row major):"
+                    );
+                    translation_matrix_row_major.print();
+                    // ref on translation matrix
+                    // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
+
+                    let highlight_color = new THREE.Color();
+                    color.setHex(0xffffff);
+                    instancedMeshes.setColorAt(i, highlight_color);
+                }
 
                 // vnh = new VertexNormalsHelper(instancedMeshes, 1, 0xff0000);
                 // scene.add(vnh);
