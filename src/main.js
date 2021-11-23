@@ -51,7 +51,7 @@ function init() {
         0.1,
         100000
     );
-    cameraPerspective.position.set(10, 20, 30);
+    cameraPerspective.position.set(10, 5, 10);
 
     // [+] light
     // [-] hemi light
@@ -155,7 +155,9 @@ function init() {
     window.addEventListener("resize", onWindowResize, false);
 
     // [+] create a tensor
-    const tensor = tf.randomNormal([2, 3, 4]);
+    // const tensor = tf.randomNormal([2, 3, 4]);
+    const tensor = tf.randomUniform([2, 3, 4]);
+    tensor.print();
     const tShape = tensor.shape;
     console.log("tensor shape :", tShape);
     const C = tShape[0];
@@ -164,12 +166,14 @@ function init() {
     console.log("C, H, W : ", C, H, W);
     instanceCount = tensor.dataSync().length;
     console.log(instanceCount);
+    const tensorArray = tensor.dataSync();
+    console.log(tensorArray);
 
     // [+] geometry
     // [-] create a sphere
     const sphereGeometry = new THREE.SphereGeometry(0.2, 32, 32);
     const sphereMaterial = new THREE.MeshStandardMaterial({
-        color: 0xff0000,
+        color: 0xffff00,
         side: THREE.DoubleSide,
         // flatShading: true,
         shadowSide: THREE.DoubleSide,
@@ -243,33 +247,34 @@ function init() {
             for (let x = 0; x < W; x++) {   // x for Width, or column num
                 // matrix.setPosition(offset - x, offset - y, offset - z);
                 matrix.setPosition(x, -y, -z);
-
                 instancedMeshes.setMatrixAt(i, matrix);
 
                 let color = new THREE.Color();
-                color.setHex(Math.random() * 0xffffff);
+                // color.setHex(Math.random() * 0xffffff);
+                // color.setRGB( tensorArray[i], tensorArray[i], tensorArray[i] );
+                color.setHSL( 0.1, 1, tensorArray[i] );
                 instancedMeshes.setColorAt(i, color);
 
-                if (z == 0 && y == 1 && x == 2) {
-                    // matrix element by default is column major,
-                    // ... so need to use tf.transpose to convert it into row major matrix
-                    const translation_matrix_row_major = tf.transpose(
-                        tf.tensor(matrix.elements, [4, 4])
-                    );
+                // if (z == 0 && y == 1 && x == 2) {
+                //     // matrix element by default is column major,
+                //     // ... so need to use tf.transpose to convert it into row major matrix
+                //     const translation_matrix_row_major = tf.transpose(
+                //         tf.tensor(matrix.elements, [4, 4])
+                //     );
                     
-                    console.log(
-                        "translation matrix of item ",
-                        i+1,
-                        "is (row major):"
-                    );
-                    translation_matrix_row_major.print();
-                    // ref on translation matrix
-                    // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
+                //     console.log(
+                //         "translation matrix of item ",
+                //         i+1,
+                //         "is (row major):"
+                //     );
+                //     translation_matrix_row_major.print();
+                //     // ref on translation matrix
+                //     // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
 
-                    let highlight_color = new THREE.Color();
-                    highlight_color.setHex(0x000000);
-                    instancedMeshes.setColorAt(i, highlight_color);   
-                }
+                //     let highlight_color = new THREE.Color();
+                //     highlight_color.setHex(0x000000);
+                //     instancedMeshes.setColorAt(i, highlight_color);   
+                // }
 
                 // vnh = new VertexNormalsHelper(instancedMeshes, 1, 0xff0000);
                 // scene.add(vnh);
@@ -278,7 +283,7 @@ function init() {
             }
         }
     }
-
+    // [.] add instanced meshes to scene
     scene.add(instancedMeshes);
 }
 
