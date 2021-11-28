@@ -165,7 +165,7 @@ function init() {
     const W = tShape[2];
     console.log("C, H, W : ", C, H, W);
     instanceCount = tensor.dataSync().length;
-    console.log(instanceCount);
+    console.log("length of tensor :", instanceCount);
     const tensorArray = tensor.dataSync();
     console.log(tensorArray);
 
@@ -224,22 +224,6 @@ function init() {
 
     const matrix = new THREE.Matrix4();
 
-    // for (let x = 0; x < instanceAmount; x++) {
-    //     for (let y = 0; y < instanceAmount; y++) {
-    //         for (let z = 0; z < instanceAmount; z++) {
-    //             matrix.setPosition(offset - x, offset - y, offset - z);
-
-    //             instancedMeshes.setMatrixAt(i, matrix);
-
-    //             let color = new THREE.Color();
-    //             color.setHex(Math.random() * 0xffffff);
-    //             instancedMeshes.setColorAt(i, color);
-
-    //             i++;
-    //         }
-    //     }
-    // }
-
     // [.] move each element by matrix
     // prettier-ignore
     for (let z = 0; z < C; z++) {           // z for Channel, or color channel, or depth 
@@ -252,32 +236,10 @@ function init() {
                 let color = new THREE.Color();
                 // color.setHex(Math.random() * 0xffffff);
                 // color.setRGB( tensorArray[i], tensorArray[i], tensorArray[i] );
-                color.setHSL( 0.1, 1, tensorArray[i] );
+                color.setHSL( 0.2, 1, tensorArray[i] );
                 instancedMeshes.setColorAt(i, color);
 
-                // if (z == 0 && y == 1 && x == 2) {
-                //     // matrix element by default is column major,
-                //     // ... so need to use tf.transpose to convert it into row major matrix
-                //     const translation_matrix_row_major = tf.transpose(
-                //         tf.tensor(matrix.elements, [4, 4])
-                //     );
-                    
-                //     console.log(
-                //         "translation matrix of item ",
-                //         i+1,
-                //         "is (row major):"
-                //     );
-                //     translation_matrix_row_major.print();
-                //     // ref on translation matrix
-                //     // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
-
-                //     let highlight_color = new THREE.Color();
-                //     highlight_color.setHex(0x000000);
-                //     instancedMeshes.setColorAt(i, highlight_color);   
-                // }
-
-                // vnh = new VertexNormalsHelper(instancedMeshes, 1, 0xff0000);
-                // scene.add(vnh);
+                Util.highlightCard(x, y, z, 3, 2, 1, i, matrix, instancedMeshes); 
 
                 i++;
             }

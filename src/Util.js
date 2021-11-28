@@ -188,4 +188,28 @@ export default class Util {
 
         // addLineShape(shape, color, x, y, z, rx, ry, rz, s);
     }
+
+    static highlightCard(x, y, z, _x, _y, _z, _i, _matrix, _instancedMeshes) {
+        if (z == _z && y == _y && x == _x) {
+            // matrix element by default is column major,
+            // ... so need to use tf.transpose to convert it into row major matrix
+            const translation_matrix_row_major = tf.transpose(
+                tf.tensor(_matrix.elements, [4, 4])
+            );
+
+            console.log(
+                "translation matrix of item ",
+                _i + 1,
+                "is (row major):"
+            );
+            translation_matrix_row_major.print();
+            // ref on translation matrix
+            // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
+
+            let highlight_color = new THREE.Color();
+            highlight_color.setHex(0x000000);
+            _instancedMeshes.setColorAt(_i, highlight_color);
+            // _instancedMeshes[_i].opacity = 0.2;
+        }
+    }
 }
