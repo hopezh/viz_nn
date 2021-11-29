@@ -209,7 +209,6 @@ export default class Util {
             let highlight_color = new THREE.Color();
             highlight_color.setHex(0x000000);
             _instancedMeshes.setColorAt(_i, highlight_color);
-            // _instancedMeshes[_i].opacity = 0.2;
         }
     }
 }

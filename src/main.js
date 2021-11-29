@@ -66,7 +66,7 @@ function init() {
     dirLight.position.set(-50, 50, 100);
     dirLight.matrixAutoUpdate = false;
     dirLight.updateMatrix();
-    // dirLight.castShadow = true;
+    dirLight.castShadow = true;
     dirLight.shadow.camera.top = 25;
     dirLight.shadow.camera.bottom = -25;
     dirLight.shadow.camera.left = -25;
@@ -236,10 +236,11 @@ function init() {
                 let color = new THREE.Color();
                 // color.setHex(Math.random() * 0xffffff);
                 // color.setRGB( tensorArray[i], tensorArray[i], tensorArray[i] );
-                color.setHSL( 0.2, 1, tensorArray[i] );
+                // color.setHSL( 0.2, 1, tensorArray[i] );
+                color.setHSL( 0.2, 1, 0.5 );
                 instancedMeshes.setColorAt(i, color);
 
-                Util.highlightCard(x, y, z, 3, 2, 1, i, matrix, instancedMeshes); 
+                // Util.highlightCard(x, y, z, 3, 2, 1, i, matrix, instancedMeshes); 
 
                 i++;
             }
