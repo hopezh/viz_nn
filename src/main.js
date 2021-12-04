@@ -33,6 +33,7 @@ const color = new THREE.Color();
 // init list of layouts
 const layouts = {
     layoutTensor : [], 
+    layoutMatrix : [], 
     layoutRowVec : [], 
     layoutColVec : [], 
 }
