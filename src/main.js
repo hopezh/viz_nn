@@ -30,6 +30,13 @@ const instanceAmount = 10;
 let instanceCount;
 const color = new THREE.Color();
 
+// init list of layouts
+const layouts = {
+    layoutTensor : [], 
+    layoutRowVec : [], 
+    layoutColVec : [], 
+}
+
 // ============================================================
 // [#] run main functions
 init();
