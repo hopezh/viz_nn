@@ -248,7 +248,7 @@ function init() {
                 color.setHSL( 0.2, 1, 0.5 );
                 instancedMeshes.setColorAt(i, color);
 
-                // Util.highlightCard(x, y, z, 3, 2, 1, i, matrix, instancedMeshes); 
+                Util.highlightCard(x, y, z, 2, 1, 0, i, matrix, instancedMeshes); 
 
                 i++;
             }
