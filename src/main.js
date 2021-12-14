@@ -179,14 +179,14 @@ function init() {
 
     // [+] geometry
     // [-] create a sphere
-    const sphereGeometry = new THREE.SphereGeometry(0.2, 32, 32);
-    const sphereMaterial = new THREE.MeshStandardMaterial({
+    const sphereGeo = new THREE.SphereGeometry(0.2, 32, 32);
+    const sphereMat = new THREE.MeshStandardMaterial({
         color: 0xffff00,
         side: THREE.DoubleSide,
         // flatShading: true,
         shadowSide: THREE.DoubleSide,
     });
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    const sphere = new THREE.Mesh(sphereGeo, sphereMat);
     sphere.castShadow = true; //default is false
     sphere.receiveShadow = true; //default
     scene.add(sphere);
